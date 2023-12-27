@@ -32,6 +32,12 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
+    @ExceptionHandler(InvalidOrderException.class)
+    public ResponseEntity<?> invalidOrderException(InvalidOrderException e){
+        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
+    }
+
     // Spring exceptions
 
     @ExceptionHandler(DateTimeParseException.class)
