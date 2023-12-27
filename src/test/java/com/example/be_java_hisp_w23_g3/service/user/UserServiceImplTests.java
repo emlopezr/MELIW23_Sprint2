@@ -4,6 +4,7 @@ import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
 import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
+import com.example.be_java_hisp_w23_g3.exception.NotAFollowerException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
 import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
@@ -268,5 +269,18 @@ class UserServiceImplTests {
         assertEquals(new MessageResponseDTO("You have just unfollowed a seller"), respond);
         verify(userRepository,times(1)).findSellerInFollowings(user,sellerIdToUnfollow);
         verify(userRepository, times(1)).read(userId);
+    }
+
+    @Test
+    void followSeller_shouldThrowNotAFollowerException(){
+        Long userId = 1L;
+        Long sellerIdToUnfollow = 999L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenThrow(NotAFollowerException.class);
+
+        assertThrows(NotAFollowerException.class,() -> service.unFollowSeller(userId,sellerIdToUnfollow));
+        verify(userRepository,times(1)).findSellerInFollowings(user, sellerIdToUnfollow);
     }
 }
