@@ -17,7 +17,6 @@ public class PostRequestDTO {
     @Positive(message = "El user_id debe ser mayor que cero")
     private Long userId;
 
-    @NotNull(message = "La fecha no puede estar vacía")
     @NotBlank(message = "La fecha no puede estar vacía")
     @JsonProperty("date")
     private String date;
