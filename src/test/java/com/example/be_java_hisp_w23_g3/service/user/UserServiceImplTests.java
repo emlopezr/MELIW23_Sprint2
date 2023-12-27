@@ -307,15 +307,15 @@ class UserServiceImplTests {
         when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenReturn(Optional.ofNullable(sellerToUnfollow));
         MessageResponseDTO respond = service.unFollowSeller(userId, sellerIdToUnfollow);
 
-        assertEquals(user.getFollowing().size(), 2);
-        assertEquals(sellerToUnfollow.getFollower().size(), 0);
+        assertEquals(2,user.getFollowing().size());
+        assertTrue(sellerToUnfollow.getFollower().isEmpty());
         assertEquals(new MessageResponseDTO("You have just unfollowed a seller"), respond);
         verify(userRepository,times(1)).findSellerInFollowings(user,sellerIdToUnfollow);
         verify(userRepository, times(1)).read(userId);
     }
 
     @Test
-    void followSeller_shouldThrowNotAFollowerException(){
+    void unfollowSeller_shouldThrowNotAFollowerException(){
         Long userId = 1L;
         Long sellerIdToUnfollow = 999L;
         User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
