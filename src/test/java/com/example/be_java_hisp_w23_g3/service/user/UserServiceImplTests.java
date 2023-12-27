@@ -15,9 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -249,5 +249,24 @@ class UserServiceImplTests {
         when(sellerRepository.read(sellerIdToFollow)).thenThrow(NotFoundException.class);
         assertThrows(NotFoundException.class,() -> service.followSeller(userId,sellerIdToFollow));
         verify(sellerRepository,times(1)).read(sellerIdToFollow);
+    }
+
+    @Test
+    void unfollowSeller_shouldWorkWhenSellerExistsOnFollowings() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+        Seller sellerToUnfollow = user.getFollowing().stream().findFirst().get();
+        Long sellerIdToUnfollow = sellerToUnfollow.getId();
+        sellerToUnfollow.setFollower(new HashSet<>(Arrays.asList(user)));
+
+        when(userRepository.read(userId)).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenReturn(Optional.ofNullable(sellerToUnfollow));
+        MessageResponseDTO respond = service.unFollowSeller(userId, sellerIdToUnfollow);
+
+        assertEquals(user.getFollowing().size(), 2);
+        assertEquals(sellerToUnfollow.getFollower().size(), 0);
+        assertEquals(new MessageResponseDTO("You have just unfollowed a seller"), respond);
+        verify(userRepository,times(1)).findSellerInFollowings(user,sellerIdToUnfollow);
+        verify(userRepository, times(1)).read(userId);
     }
 }
