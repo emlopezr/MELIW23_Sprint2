@@ -1,6 +1,10 @@
 package com.example.be_java_hisp_w23_g3.exception;
 
 import com.example.be_java_hisp_w23_g3.dto.ExceptionDto;
+import com.example.be_java_hisp_w23_g3.dto.ValidationExceptionDTO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -15,8 +19,20 @@ public class ExceptionController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
+        ValidationExceptionDTO validationExceptionDto = new ValidationExceptionDTO(
+            "Se han producido errores de validación",
+            e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationExceptionDto);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> constraintViolationException(ConstraintViolationException e){
+        ValidationExceptionDTO validationExceptionDto = new ValidationExceptionDTO(
+            "Se han producido errores de validación",
+            e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).toList()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationExceptionDto);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
