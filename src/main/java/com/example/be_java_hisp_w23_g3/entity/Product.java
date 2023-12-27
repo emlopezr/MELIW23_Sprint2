@@ -26,7 +26,6 @@ public class Product {
         ArgumentValidator.validateRequired(type, "Product type is required");
         ArgumentValidator.validateRequired(brand, "Product brand is required");
         ArgumentValidator.validateRequired(color, "Product color is required");
-        ArgumentValidator.validateRequired(notes, "Product notes are required");
         return new Product(id, name, type, brand, color, notes);
     }
 
