@@ -24,38 +24,38 @@ public class UserController {
 
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<FollowersListDTO> getFollowersList(
-        @PathVariable("userId") @Positive(message = "El user_id debe ser mayor que cero") Long userId,
-        @RequestParam(required = false) @Pattern(regexp = "^(?i)(NAME_ASC|NAME_DESC)$", message = "El campo order solo puede ser NAME_ASC o NAME_DESC") String order
+        @PathVariable("userId") @Positive(message = "The user_id must be greater than zero") Long userId,
+        @RequestParam(required = false) @Pattern(regexp = "^(?i)(NAME_ASC|NAME_DESC)$", message = "Order field can only be NAME_ASC or NAME_DESC") String order
     ) {
         return new ResponseEntity<>(userService.getFollowersList(userId, order), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followers/count")
     public ResponseEntity<?> getFollowersCount(
-        @PathVariable @Positive(message = "El user_id debe ser mayor que cero") Long userId
+        @PathVariable @Positive(message = "The user_id must be greater than zero") Long userId
     ) {
         return new ResponseEntity<>(userService.getFollowersCount(userId), HttpStatus.OK);
     }
 
     @GetMapping("/{userID}/followed/list")
     public ResponseEntity<?> getFollowedSellerList(
-        @PathVariable @Positive(message = "El user_id debe ser mayor que cero") Long userID,
-        @RequestParam(required = false) @Pattern(regexp = "^(?i)(NAME_ASC|NAME_DESC)$", message = "El campo order solo puede ser NAME_ASC o NAME_DESC") String order
+        @PathVariable @Positive(message = "The user_id must be greater than zero") Long userID,
+        @RequestParam(required = false) @Pattern(regexp = "^(?i)(NAME_ASC|NAME_DESC)$", message = "Order field can only be NAME_ASC or NAME_DESC") String order
     ) {
         return new ResponseEntity<>(userService.getFollowedSellersList(userID, order), HttpStatus.OK);
     }
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<?> followSeller(
-        @PathVariable @Positive(message = "El user_id seguidor debe ser mayor que cero") Long userId,
-        @PathVariable @Positive(message = "El user_id a seguir debe ser mayor que cero") Long userIdToFollow
+        @PathVariable @Positive(message = "The follower user_id must be greater than zero") Long userId,
+        @PathVariable @Positive(message = "The user_id to follow must be greater than zero") Long userIdToFollow
     ) {
         return new ResponseEntity<>(userService.followSeller(userId, userIdToFollow), HttpStatus.OK);
     }
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<?> unFollowSeller(
-        @PathVariable @Positive(message = "El user_id seguidor debe ser mayor que cero") Long userId,
-        @PathVariable @Positive(message = "El user_id a dejar de seguir debe ser mayor que cero") Long userIdToUnfollow
+        @PathVariable @Positive(message = "The follower user_id must be greater than zero") Long userId,
+        @PathVariable @Positive(message = "The user_id to unfollow must be greater than zero") Long userIdToUnfollow
     ) {
         return new ResponseEntity<>(userService.unFollowSeller(userId, userIdToUnfollow), HttpStatus.OK);
     }

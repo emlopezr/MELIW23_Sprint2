@@ -30,7 +30,7 @@ public class ProductController {
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> followedPostsList(
         @PathVariable @Positive(message = "El user_id debe ser mayor que cero") Long userId,
-        @RequestParam(required = false) @Pattern(regexp = "^(?i)(DATE_ASC|DATE_DESC)$", message = "El campo order solo puede ser DATE_ASC o DATE_DESC") String order
+        @RequestParam(required = false) @Pattern(regexp = "^(?i)(DATE_ASC|DATE_DESC)$", message = "Order field can only be DATE_ASC or DATE_DESC") String order
     ) {
         return new ResponseEntity<>(productService.followedPostsList(userId, order), HttpStatus.OK);
     }
