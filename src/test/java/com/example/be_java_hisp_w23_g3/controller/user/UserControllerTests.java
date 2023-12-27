@@ -2,9 +2,11 @@ package com.example.be_java_hisp_w23_g3.controller.user;
 
 
 import com.example.be_java_hisp_w23_g3.controller.UserController;
+import com.example.be_java_hisp_w23_g3.dto.response.FollowedListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
 import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
 import com.example.be_java_hisp_w23_g3.service.user.UserService;
+import com.example.be_java_hisp_w23_g3.util.FollowedListDTOTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.FollowersListDTOTestDataBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -83,6 +85,67 @@ class UserControllerTests {
         assertThrows(InvalidOrderException.class, () -> controller.getFollowersList(userId, order));
 
         verify(userService).getFollowersList(userId, order);
+    }
+
+    @Test
+    void getFollowedSellerList_shouldAcceptNameAscOrderParameter() {
+        Long userId = 1L;
+        String order = "name_asc";
+
+        FollowedListDTO followedListDTO = new FollowedListDTOTestDataBuilder()
+                .followedListDTOWithFollowed().build();
+
+        when(userService.getFollowedSellersList(userId, order))
+                .thenReturn(followedListDTO);
+
+        controller.getFollowedSellerList(userId, order);
+
+        verify(userService).getFollowedSellersList(userId, order);
+    }
+
+    @Test
+    void getFollowedSellerList_shouldAcceptNameDescOrderParameter() {
+        Long userId = 1L;
+        String order = "name_desc";
+
+        FollowedListDTO followedListDTO = new FollowedListDTOTestDataBuilder()
+                .followedListDTOWithFollowed().build();
+
+        when(userService.getFollowedSellersList(userId, order))
+                .thenReturn(followedListDTO);
+
+        controller.getFollowedSellerList(userId, order);
+
+        verify(userService).getFollowedSellersList(userId, order);
+    }
+
+    @Test
+    void getFollowedSellerList_shouldAcceptNullOrderParameter() {
+        Long userId = 1L;
+
+        FollowedListDTO followedListDTO = new FollowedListDTOTestDataBuilder()
+                .followedListDTOWithFollowed().build();
+
+        when(userService.getFollowedSellersList(userId, null))
+                .thenReturn(followedListDTO);
+
+        controller.getFollowedSellerList(userId, null);
+
+        verify(userService).getFollowedSellersList(userId, null);
+    }
+
+    @Test
+    void getFollowedSellerList_shouldThrowInvalidOrderException() {
+        Long userId = 1L;
+        String order = "any other than name_asc or name_desc";
+
+        doThrow(new InvalidOrderException(
+                "The 'order' parameter is invalid. The permitted values are 'name_asc' or 'name_desc'."))
+                .when(userService).getFollowedSellersList(userId, order);
+
+        assertThrows(InvalidOrderException.class, () -> controller.getFollowedSellerList(userId, order));
+
+        verify(userService).getFollowedSellersList(userId, order);
     }
 
 }
