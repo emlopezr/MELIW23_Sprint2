@@ -74,4 +74,44 @@ class UserServiceImplTests {
 
         assertEquals(actual, expected);
     }
+
+    @Test
+    void getFollowersList_shouldReturnNotOrderedList() {
+        Long sellerId = 1L;
+        Seller seller = new SellerTestDataBuilder()
+                .withId(sellerId)
+                .sellerWithFollowers()
+                .build();
+        List<Long> expected = seller.getFollower().stream()
+                .map(User::getId).toList();
+
+        when(sellerRepository.read(sellerId)).thenReturn(Optional.of(seller));
+
+        List<Long> actual = service.getFollowersList(sellerId, null).getFollowers()
+                .stream().map(UserDTO::getUserId).toList();
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    void getFollowersList_shouldReturnEmptyList() {
+        Long sellerId = 1L;
+        Seller seller = new SellerTestDataBuilder()
+                .sellerByDefault()
+                .build();
+
+        when(sellerRepository.read(sellerId)).thenReturn(Optional.of(seller));
+
+        List<Long> actual = service.getFollowersList(sellerId, null).getFollowers()
+                .stream().map(UserDTO::getUserId).toList();
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void getFollowersList_shouldThrowNotFoundException() {
+        when(sellerRepository.read(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> service.getFollowersList(1L, null));
+    }
 }
