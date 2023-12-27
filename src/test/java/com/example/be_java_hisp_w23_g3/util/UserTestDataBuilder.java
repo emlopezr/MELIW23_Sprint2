@@ -21,7 +21,11 @@ public class UserTestDataBuilder {
     public UserTestDataBuilder userWithFollowings() {
         this.id = 1L;
         this.username = "username1";
-        this.following = Set.of(new SellerTestDataBuilder().sellerByDefault().withId(101L).build());
+        this.following = Set.of(
+                new SellerTestDataBuilder().sellerByDefault().withId(101L).build(),
+                new SellerTestDataBuilder().sellerByDefault().withId(102L).build(),
+                new SellerTestDataBuilder().sellerByDefault().withId(103L).build()
+        );
         return this;
     }
 
