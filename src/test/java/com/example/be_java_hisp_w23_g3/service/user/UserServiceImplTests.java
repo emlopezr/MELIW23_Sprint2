@@ -9,6 +9,7 @@ import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
 import com.example.be_java_hisp_w23_g3.util.SellerTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.UserMapper;
+import com.example.be_java_hisp_w23_g3.util.UserTestDataBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -128,5 +129,99 @@ class UserServiceImplTests {
         when(sellerRepository.read(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> service.getFollowersList(1L, null));
+    }
+
+    @Test
+    void getFollowedSellersList_shouldReturnNameAscOrderedList() {
+        Long userId = 1L;
+        String order = "name_asc";
+        User user = new UserTestDataBuilder()
+                .withId(userId)
+                .userWithFollowings()
+                .build();
+        List<Long> expected = user.getFollowing().stream()
+                .sorted(Comparator.comparing(User::getUsername))
+                .map(User::getId).toList();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        List<Long> actual = service.getFollowedSellersList(userId, order).getFollowed()
+                .stream().map(UserDTO::getUserId).toList();
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    void getFollowedSellersList_shouldReturnNameDescOrderedList() {
+        Long userId = 1L;
+        String order = "name_desc";
+        User user = new UserTestDataBuilder()
+                .withId(userId)
+                .userWithFollowings()
+                .build();
+        List<Long> expected = user.getFollowing().stream()
+                .sorted(Comparator.comparing(User::getUsername).reversed())
+                .map(User::getId).toList();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        List<Long> actual = service.getFollowedSellersList(userId, order).getFollowed()
+                .stream().map(UserDTO::getUserId).toList();
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    void getFollowedSellersList_shouldReturnNotOrderedList() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder()
+                .withId(userId)
+                .userWithFollowings()
+                .build();
+        List<Long> expected = user.getFollowing().stream()
+                .map(User::getId).toList();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        List<Long> actual = service.getFollowedSellersList(userId, null).getFollowed()
+                .stream().map(UserDTO::getUserId).toList();
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    void getFollowedSellersList_shouldThrowInvalidOrderException() {
+        Long userId = 1L;
+        String order = "any value other than 'name_asc' or 'name_desc'";
+        User user = new UserTestDataBuilder()
+                .withId(userId)
+                .userWithFollowings()
+                .build();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        assertThrows(InvalidOrderException.class, () -> service.getFollowedSellersList(userId, order));
+    }
+
+    @Test
+    void getFollowedSellersList_shouldReturnEmptyList() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder()
+                .userByDefault()
+                .build();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        List<Long> actual = service.getFollowedSellersList(userId, null).getFollowed()
+                .stream().map(UserDTO::getUserId).toList();
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void getFollowedSellersList_shouldThrowNotFoundException() {
+        when(userRepository.read(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> service.getFollowedSellersList(1L, null));
     }
 }
