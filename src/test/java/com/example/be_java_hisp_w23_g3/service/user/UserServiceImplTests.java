@@ -3,6 +3,7 @@ package com.example.be_java_hisp_w23_g3.service.user;
 import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
@@ -91,6 +92,20 @@ class UserServiceImplTests {
                 .stream().map(UserDTO::getUserId).toList();
 
         assertEquals(actual, expected);
+    }
+
+    @Test
+    void getFollowersList_shouldThrowInvalidOrderException() {
+        Long sellerId = 1L;
+        String order = "any value other than 'name_asc' or 'name_desc'";
+        Seller seller = new SellerTestDataBuilder()
+                .withId(sellerId)
+                .sellerWithFollowers()
+                .build();
+
+        when(sellerRepository.read(sellerId)).thenReturn(Optional.of(seller));
+
+        assertThrows(InvalidOrderException.class, () -> service.getFollowersList(sellerId, order));
     }
 
     @Test
