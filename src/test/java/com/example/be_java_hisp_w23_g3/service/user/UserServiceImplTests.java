@@ -11,6 +11,7 @@ import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
 import com.example.be_java_hisp_w23_g3.util.SellerTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.UserTestDataBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,6 +35,48 @@ class UserServiceImplTests {
 
     @InjectMocks
     UserServiceImpl service;
+
+    @Test
+    void getFollowersCount_shouldGetResultOfNumberOfUsersWhoFollowingSpecificSeller(){
+        Long param = 1L;
+
+        Seller seller = new SellerTestDataBuilder()
+                .withId(param)
+                .sellerWithFollowers()
+                .build();
+
+        Integer expected = seller.getFollower().size();
+
+        when(sellerRepository.read(param)).thenReturn(Optional.of(seller));
+
+        Integer actual = service.getFollowersCount(param).getFollowersCount();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getFollowersCount_shouldThrowNotFoundException(){
+        when(sellerRepository.read(anyLong())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NotFoundException.class, () -> service.getFollowersCount(1L));
+    }
+
+    @Test
+    void getFollowersCount_shouldResultIsZero(){
+        Long param = 1L;
+
+        Seller seller = new SellerTestDataBuilder()
+                .sellerByDefault().build();
+
+        Integer expected = seller.getFollower().size();
+
+        when(sellerRepository.read(param)).thenReturn(Optional.of(seller));
+
+        Integer actual = service.getFollowersCount(param).getFollowersCount();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
 
     @Test
     void getFollowersList_shouldReturnNameAscOrderedList() {
