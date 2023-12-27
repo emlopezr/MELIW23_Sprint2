@@ -50,4 +50,12 @@ class UserServiceImplTests {
         verify(userRepository, times(1)).read(userId);
     }
 
+    @Test
+    void followSeller_shouldNotWorkWhenSellerDoesNotExist(){
+        Long userId = 1L;
+        Long sellerIdToFollow = 999L;
+        when(sellerRepository.read(sellerIdToFollow)).thenThrow(NotFoundException.class);
+        assertThrows(NotFoundException.class,() -> service.followSeller(userId,sellerIdToFollow));
+        verify(sellerRepository,times(1)).read(sellerIdToFollow);
+    }
 }
