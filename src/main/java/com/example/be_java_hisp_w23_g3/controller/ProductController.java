@@ -4,12 +4,16 @@ import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
 import com.example.be_java_hisp_w23_g3.service.product.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/products")
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -20,13 +24,14 @@ public class ProductController {
 
     @PostMapping("/post")
     public ResponseEntity<PostResponseDTO> postProduct(@Valid @RequestBody PostRequestDTO postRequestDTO) {
-        PostResponseDTO postResponseDTO = productService.postProduct(postRequestDTO);
-        return new ResponseEntity<>(postResponseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.postProduct(postRequestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> followedPostsList(@PathVariable Long userId,
-                                               @RequestParam(required = false) String order) {
-        return ResponseEntity.ok().body(productService.followedPostsList(userId, order));
+    public ResponseEntity<?> followedPostsList(
+        @PathVariable @Positive(message = "El user_id debe ser mayor que cero") Long userId,
+        @RequestParam(required = false) @Pattern(regexp = "^(?i)(DATE_ASC|DATE_DESC)$", message = "El campo order solo puede ser DATE_ASC o DATE_DESC") String order
+    ) {
+        return new ResponseEntity<>(productService.followedPostsList(userId, order), HttpStatus.OK);
     }
 }
