@@ -3,6 +3,7 @@ package com.example.be_java_hisp_w23_g3.util;
 import com.example.be_java_hisp_w23_g3.dto.response.*;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
 
 import java.util.Comparator;
 public class UserMapper {
@@ -25,6 +26,10 @@ public class UserMapper {
                     .sorted(Comparator.comparing(User::getUsername).reversed())
                     .map(SellerMapper::mapToDTO).toList());
 
+        if (order != null)
+            throw new InvalidOrderException(
+                    "The 'order' parameter is invalid. The permitted values are 'name_asc' or 'name_desc'.");
+
         return new FollowedListDTO(user.getId(), user.getUsername(), user.getFollowing().stream()
                 .map(SellerMapper::mapToDTO).toList());
     }
@@ -39,6 +44,10 @@ public class UserMapper {
             return new FollowersListDTO(seller.getId(), seller.getUsername(), seller.getFollower().stream()
                     .sorted(Comparator.comparing(User::getUsername).reversed())
                     .map(UserMapper::mapToDTO).toList());
+
+        if (order != null)
+            throw new InvalidOrderException(
+                    "The 'order' parameter is invalid. The permitted values are 'name_asc' or 'name_desc'.");
 
         return new FollowersListDTO(seller.getId(), seller.getUsername(), seller.getFollower().stream()
                 .map(UserMapper::mapToDTO).toList());
