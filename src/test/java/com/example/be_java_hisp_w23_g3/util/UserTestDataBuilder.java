@@ -3,6 +3,7 @@ package com.example.be_java_hisp_w23_g3.util;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserTestDataBuilder {
@@ -13,14 +14,18 @@ public class UserTestDataBuilder {
     public UserTestDataBuilder userByDefault() {
         this.id = 1L;
         this.username = "username1";
-        this.following = Set.of();
+        this.following = new HashSet<>();
         return this;
     }
 
     public UserTestDataBuilder userWithFollowings() {
         this.id = 1L;
         this.username = "username1";
-        this.following = Set.of(new SellerTestDataBuilder().sellerByDefault().withId(101L).build());
+        this.following = Set.of(
+                new SellerTestDataBuilder().sellerByDefault().withId(101L).build(),
+                new SellerTestDataBuilder().sellerByDefault().withId(102L).build(),
+                new SellerTestDataBuilder().sellerByDefault().withId(103L).build()
+        );
         return this;
     }
 

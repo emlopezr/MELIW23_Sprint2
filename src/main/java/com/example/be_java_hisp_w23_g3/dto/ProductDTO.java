@@ -1,5 +1,6 @@
 package com.example.be_java_hisp_w23_g3.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -41,6 +42,7 @@ public class ProductDTO {
     @Size(max = 80, message = "La longitud del campo notes no puede superar los 80 caracteres")
     @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "El campo notes no puede poseer caracteres especiales")
     @JsonProperty("notes")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String notes;
 
 }

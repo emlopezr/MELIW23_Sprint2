@@ -4,6 +4,7 @@ import com.example.be_java_hisp_w23_g3.entity.Post;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class SellerTestDataBuilder {
         this.id = 1L;
         this.username = "sellerUsername1";
         this.following = Set.of();
-        this.follower = Set.of();
+        this.follower = new HashSet<>();
         this.posts = Map.of();
         return this;
     }
@@ -27,7 +28,11 @@ public class SellerTestDataBuilder {
     public SellerTestDataBuilder sellerWithFollowings() {
         this.id = 1L;
         this.username = "sellerUsername1";
-        this.following = Set.of(new SellerTestDataBuilder().sellerByDefault().withId(102L).build());
+        this.following = Set.of(
+                new SellerTestDataBuilder().sellerByDefault().withId(101L).build(),
+                new SellerTestDataBuilder().sellerByDefault().withId(102L).build(),
+                new SellerTestDataBuilder().sellerByDefault().withId(103L).build()
+        );
         this.follower = Set.of();
         this.posts = Map.of();
         return this;
@@ -37,7 +42,11 @@ public class SellerTestDataBuilder {
         this.id = 1L;
         this.username = "sellerUsername1";
         this.following = Set.of();
-        this.follower = Set.of(new UserTestDataBuilder().userByDefault().withId(101L).build());
+        this.follower = Set.of(
+                new UserTestDataBuilder().userByDefault().withId(101L).build(),
+                new UserTestDataBuilder().userByDefault().withId(102L).build(),
+                new UserTestDataBuilder().userByDefault().withId(103L).build()
+        );
         this.posts = Map.of();
         return this;
     }
