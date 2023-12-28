@@ -130,7 +130,7 @@ class ProductServiceImplTests {
     }
 
     @Test
-    void getFollowedPosts_ReturnsPostsWithinLastTwoWeeks() {
+    void followedPostsList_ReturnsPostsWithinLastTwoWeeks() {
         Long userId = 1L;
         User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
 
@@ -140,15 +140,19 @@ class ProductServiceImplTests {
                 new PostTestDataBuilder().postByDefault().withId(3L).withDate(LocalDate.now().minusWeeks(2).minusDays(1)).build(),
                 new PostTestDataBuilder().postByDefault().withId(4L).withDate(LocalDate.now().minusWeeks(3)).build()
         );
-        when(productRepository.readBatchBySellerIds(Arrays.asList(1L, 2L))).thenReturn(posts);
 
-        List<Post> result = service.getFollowedPosts(Arrays.asList(1L, 2L));
+        when(productRepository.readBatchBySellerIds(Arrays.asList(1L, 2L))).thenReturn(posts);
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        FollowedPostsListDTO result = service.followedPostsList(userId, null);
 
         assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(1L, result.get(0).getId());
-        assertEquals(2L, result.get(1).getId());
+        assertEquals(userId, result.getUserId());
+        assertEquals(2, result.getPosts().size());
+        assertEquals(1L, result.getPosts().get(0).getPostId());
+        assertEquals(2L, result.getPosts().get(1).getPostId());
     }
+
     @Test
     void postProduct_shouldReturnCorrectDTOWhenProductIsPosted() {
         Long userId = 1L;

@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService{
                 .orElseThrow(() -> new NotFoundException("User with id " + userId + " not found"));
     }
 
-    public List<Post> getFollowedPosts(List<Long> followedSellersIds) {
+    private List<Post> getFollowedPosts(List<Long> followedSellersIds) {
         return productRepository.readBatchBySellerIds(followedSellersIds).stream()
                 .filter(post -> !post.getDate().isBefore(LocalDate.now().minusWeeks(2))).toList();
     }
