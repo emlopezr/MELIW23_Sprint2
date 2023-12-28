@@ -33,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User entity) {
+    public void update(Long id, User entity) {
 
     }
 

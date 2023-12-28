@@ -34,7 +34,7 @@ public class SellerRepositoryImpl implements SellerRepository{
     }
 
     @Override
-    public void update(Seller entity) {
+    public void update(Long id, Seller entity) {
 
     }
 

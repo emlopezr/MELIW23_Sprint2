@@ -34,8 +34,7 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public void update(Post entity) {
-
+    public void update(Long id, Post entity) {
     }
 
     @Override

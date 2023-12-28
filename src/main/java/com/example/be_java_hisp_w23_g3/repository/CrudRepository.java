@@ -7,6 +7,6 @@ public interface CrudRepository<T, ID> {
     T create(T entity);
     List<T> createAll(List<T> entities);
     Optional<T> read(ID id);
-    void update(T entity);
+    void update(ID id, T entity);
     void delete(ID id);
 }
