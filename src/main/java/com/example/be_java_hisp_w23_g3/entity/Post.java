@@ -5,7 +5,7 @@ import com.example.be_java_hisp_w23_g3.util.ArgumentValidator;
 import java.time.LocalDate;
 
 public class Post {
-    private Long id;
+    private final Long id;
     private Seller seller;
     private Product product;
     private LocalDate date;
@@ -58,4 +58,23 @@ public class Post {
         return price;
     }
 
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }

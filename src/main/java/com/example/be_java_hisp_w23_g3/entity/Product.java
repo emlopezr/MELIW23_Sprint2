@@ -52,4 +52,24 @@ public class Product {
     public String getNotes() {
         return notes;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }
