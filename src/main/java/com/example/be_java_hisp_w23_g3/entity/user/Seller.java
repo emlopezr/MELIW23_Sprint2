@@ -1,5 +1,6 @@
-package com.example.be_java_hisp_w23_g3.entity;
+package com.example.be_java_hisp_w23_g3.entity.user;
 
+import com.example.be_java_hisp_w23_g3.entity.product.Post;
 import com.example.be_java_hisp_w23_g3.util.ArgumentValidator;
 
 import java.util.HashMap;

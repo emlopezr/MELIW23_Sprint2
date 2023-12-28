@@ -55,10 +55,10 @@ public class UserController {
         return new ResponseEntity<>(userService.followSeller(userId, userIdToFollow), HttpStatus.OK);
     }
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<MessageResponseDTO> unFollowSeller(
+    public ResponseEntity<MessageResponseDTO> unfollowSeller(
         @PathVariable @Positive(message = "The follower user_id must be greater than zero") Long userId,
         @PathVariable @Positive(message = "The user_id to unfollow must be greater than zero") Long userIdToUnfollow
     ) {
-        return new ResponseEntity<>(userService.unFollowSeller(userId, userIdToUnfollow), HttpStatus.OK);
+        return new ResponseEntity<>(userService.unfollowSeller(userId, userIdToUnfollow), HttpStatus.OK);
     }
 }

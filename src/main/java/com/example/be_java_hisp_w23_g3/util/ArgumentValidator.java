@@ -1,6 +1,6 @@
 package com.example.be_java_hisp_w23_g3.util;
 
-import com.example.be_java_hisp_w23_g3.exception.ValidationException;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.ValidationException;
 
 public class ArgumentValidator {
     private ArgumentValidator() {}

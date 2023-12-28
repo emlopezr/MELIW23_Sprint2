@@ -1,6 +1,5 @@
 package com.example.be_java_hisp_w23_g3.dto.request;
 
-import com.example.be_java_hisp_w23_g3.dto.ProductDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;

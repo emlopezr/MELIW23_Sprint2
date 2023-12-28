@@ -1,9 +1,7 @@
 package com.example.be_java_hisp_w23_g3.repository.seller;
 
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
 import com.example.be_java_hisp_w23_g3.util.SellerTestDataBuilder;
-import com.example.be_java_hisp_w23_g3.util.UserTestDataBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

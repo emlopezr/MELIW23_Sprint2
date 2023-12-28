@@ -1,9 +1,9 @@
-package com.example.be_java_hisp_w23_g3.util;
+package com.example.be_java_hisp_w23_g3.util.mapper;
 
 import com.example.be_java_hisp_w23_g3.dto.response.*;
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
-import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
+import com.example.be_java_hisp_w23_g3.entity.user.User;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.InvalidOrderException;
 
 import java.util.Comparator;
 public class UserMapper {

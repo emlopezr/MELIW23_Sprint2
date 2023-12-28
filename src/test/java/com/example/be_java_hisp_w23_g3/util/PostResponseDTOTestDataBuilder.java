@@ -1,6 +1,6 @@
 package com.example.be_java_hisp_w23_g3.util;
 
-import com.example.be_java_hisp_w23_g3.dto.ProductDTO;
+import com.example.be_java_hisp_w23_g3.dto.request.ProductDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
 
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.example.be_java_hisp_w23_g3.entity;
+package com.example.be_java_hisp_w23_g3.entity.product;
 
 import com.example.be_java_hisp_w23_g3.util.ArgumentValidator;
 

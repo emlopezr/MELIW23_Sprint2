@@ -6,7 +6,7 @@ import com.example.be_java_hisp_w23_g3.dto.response.FollowedListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersCountDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
-import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.InvalidOrderException;
 import com.example.be_java_hisp_w23_g3.service.user.UserService;
 import com.example.be_java_hisp_w23_g3.util.FollowedListDTOTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.FollowersListDTOTestDataBuilder;
@@ -232,13 +232,13 @@ class UserControllerTests {
 
     MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully unfollowed.");
 
-    when(userService.unFollowSeller(userId, userIdToUnfollow)).thenReturn(messageResponseDTO);
+    when(userService.unfollowSeller(userId, userIdToUnfollow)).thenReturn(messageResponseDTO);
 
-    ResponseEntity<MessageResponseDTO> response = controller.unFollowSeller(userId, userIdToUnfollow);
+    ResponseEntity<MessageResponseDTO> response = controller.unfollowSeller(userId, userIdToUnfollow);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(messageResponseDTO, response.getBody());
-    verify(userService).unFollowSeller(userId, userIdToUnfollow);
+    verify(userService).unfollowSeller(userId, userIdToUnfollow);
 }
 
     @Test
@@ -247,11 +247,11 @@ class UserControllerTests {
         Long userIdToUnfollow = 2L;
 
         doThrow(new ConstraintViolationException("The follower user_id must be greater than zero", new HashSet<>()))
-                .when(userService).unFollowSeller(userId, userIdToUnfollow);
+                .when(userService).unfollowSeller(userId, userIdToUnfollow);
 
-        assertThrows(ConstraintViolationException.class, () -> controller.unFollowSeller(userId, userIdToUnfollow));
+        assertThrows(ConstraintViolationException.class, () -> controller.unfollowSeller(userId, userIdToUnfollow));
 
-        verify(userService).unFollowSeller(userId, userIdToUnfollow);
+        verify(userService).unfollowSeller(userId, userIdToUnfollow);
     }
 
     @Test
@@ -260,11 +260,11 @@ class UserControllerTests {
         Long userIdToUnfollow = -1L;
 
         doThrow(new ConstraintViolationException("The user_id to unfollow must be greater than zero", new HashSet<>()))
-                .when(userService).unFollowSeller(userId, userIdToUnfollow);
+                .when(userService).unfollowSeller(userId, userIdToUnfollow);
 
-        assertThrows(ConstraintViolationException.class, () -> controller.unFollowSeller(userId, userIdToUnfollow));
+        assertThrows(ConstraintViolationException.class, () -> controller.unfollowSeller(userId, userIdToUnfollow));
 
-        verify(userService).unFollowSeller(userId, userIdToUnfollow);
+        verify(userService).unfollowSeller(userId, userIdToUnfollow);
     }
 
 }
