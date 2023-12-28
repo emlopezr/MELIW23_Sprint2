@@ -1,12 +1,18 @@
 package com.example.be_java_hisp_w23_g3.service.product;
 
+import com.example.be_java_hisp_w23_g3.dto.ProductDTO;
+import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedPostsListDTO;
+import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
 import com.example.be_java_hisp_w23_g3.entity.Post;
 import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.exception.AlreadyExistsException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
+import com.example.be_java_hisp_w23_g3.exception.ValidationException;
 import com.example.be_java_hisp_w23_g3.repository.product.ProductRepository;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
+import com.example.be_java_hisp_w23_g3.util.PostRequestDTOTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.PostTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.UserTestDataBuilder;
 import org.junit.jupiter.api.Test;
@@ -22,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
@@ -122,5 +129,50 @@ class ProductServiceImplTests {
         assertEquals(3L, result.getPosts().get(0).getPostId());
         assertEquals(2L, result.getPosts().get(1).getPostId());
         assertEquals(1L, result.getPosts().get(2).getPostId());
+    }
+
+    @Test
+    void postProduct_shouldReturnCorrectDTOWhenProductIsPosted() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+
+        Post post = new PostTestDataBuilder().postByDefault().build();
+
+        when(productRepository.getNextId()).thenReturn(post.getId());
+        when(productRepository.create(any(Post.class))).thenReturn(post);
+
+        PostRequestDTO request = new PostRequestDTOTestDataBuilder().postRequestDTOByDefault().build();
+        PostResponseDTO result = service.postProduct(request);
+
+        assertNotNull(result);
+        assertEquals(post.getId(), result.getPostId());
+        assertEquals(post.getDate(), result.getDate());
+        assertEquals(post.getCategory(), result.getCategory());
+        assertEquals(post.getPrice(), result.getPrice());
+    }
+
+    @Test
+    void postProduct_shouldThrowNotFoundExceptionWhenUserDoesNotExist() {
+        Long userId = 1L;
+        when(userRepository.read(userId)).thenReturn(Optional.empty());
+
+        PostRequestDTO request = new PostRequestDTOTestDataBuilder().postRequestDTOByDefault().build();
+        assertThrows(NotFoundException.class, () -> service.postProduct(request));
+    }
+
+    @Test
+    void postProduct_shouldThrowAlreadyExistsExceptionWhenProductIsAlreadyPosted() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        PostRequestDTO request = new PostRequestDTOTestDataBuilder().postRequestDTOByDefault().build();
+        when(productRepository.findAll()).thenReturn(Collections.singletonList(new PostTestDataBuilder().postByDefault().build()));
+
+        assertThrows(AlreadyExistsException.class, () -> service.postProduct(request));
     }
 }
