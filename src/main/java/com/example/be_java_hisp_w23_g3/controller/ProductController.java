@@ -34,4 +34,5 @@ public class ProductController {
     ) {
         return new ResponseEntity<>(productService.followedPostsList(userId, order), HttpStatus.OK);
     }
+
 }

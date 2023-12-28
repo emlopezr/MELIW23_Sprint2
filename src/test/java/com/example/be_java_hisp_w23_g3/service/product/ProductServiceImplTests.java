@@ -123,4 +123,25 @@ class ProductServiceImplTests {
         assertEquals(2L, result.getPosts().get(1).getPostId());
         assertEquals(1L, result.getPosts().get(2).getPostId());
     }
+    @Test
+    void getFollowedPosts_ReturnsPostsWithinLastTwoWeeks() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
+
+        List<Post> posts = Arrays.asList(
+                new PostTestDataBuilder().postByDefault().withId(1L).withDate(LocalDate.now().minusDays(7)).build(),
+                new PostTestDataBuilder().postByDefault().withId(2L).withDate(LocalDate.now().minusDays(10)).build(),
+                new PostTestDataBuilder().postByDefault().withId(3L).withDate(LocalDate.now().minusWeeks(2).minusDays(1)).build(),
+                new PostTestDataBuilder().postByDefault().withId(4L).withDate(LocalDate.now().minusWeeks(3)).build()
+        );
+        when(productRepository.readBatchBySellerIds(Arrays.asList(1L, 2L))).thenReturn(posts);
+
+        List<Post> result = service.getFollowedPosts(Arrays.asList(1L, 2L));
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(1L, result.get(0).getId());
+        assertEquals(2L, result.get(1).getId());
+    }
+
 }
