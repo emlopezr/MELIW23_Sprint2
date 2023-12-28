@@ -1,5 +1,5 @@
 
-# SocialMeli Equipo 3 - Sprint 1 W23
+# SocialMeli Equipo 3 - Sprint 2 W23
 
 ## Descripcion del Problema
 
