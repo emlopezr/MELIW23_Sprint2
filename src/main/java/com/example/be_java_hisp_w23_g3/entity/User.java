@@ -49,10 +49,6 @@ public class User {
         return following;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setFollowing(Set<Seller> following) {
         this.following = following;
     }
