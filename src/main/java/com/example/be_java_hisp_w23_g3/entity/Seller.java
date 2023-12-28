@@ -45,4 +45,7 @@ public class Seller extends User {
         this.follower = follower;
     }
 
+    public void setPosts(Map<Long, Post> posts) {
+        this.posts = posts;
+    }
 }
