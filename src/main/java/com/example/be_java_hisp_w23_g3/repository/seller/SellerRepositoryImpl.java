@@ -35,12 +35,18 @@ public class SellerRepositoryImpl implements SellerRepository{
 
     @Override
     public void update(Long id, Seller entity) {
-
+        sellers.stream().filter(seller -> seller.getId().equals(id)).findFirst()
+                .ifPresent(seller -> {
+                    seller.setUsername(entity.getUsername());
+                    seller.setFollower(entity.getFollower());
+                    seller.setFollowing(entity.getFollowing());
+                    seller.setPosts(entity.getPosts());
+                });
     }
 
     @Override
     public void delete(Long aLong) {
-
+        sellers.removeIf(seller -> seller.getId().equals(aLong));
     }
 
 }

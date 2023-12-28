@@ -35,11 +35,19 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public void update(Long id, Post entity) {
+        posts.stream().filter(post -> post.getId().equals(id)).findFirst()
+                .ifPresent(post -> {
+                    post.setProduct(entity.getProduct());
+                    post.setDate(entity.getDate());
+                    post.setCategory(entity.getCategory());
+                    post.setPrice(entity.getPrice());
+                    post.setSeller(entity.getSeller());
+                });
     }
 
     @Override
     public void delete(Long aLong) {
-
+        posts.removeIf(post -> post.getId().equals(aLong));
     }
 
     @Override
