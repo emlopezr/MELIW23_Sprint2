@@ -1,6 +1,5 @@
 package com.example.be_java_hisp_w23_g3.service.product;
 
-import com.example.be_java_hisp_w23_g3.dto.ProductDTO;
 import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedPostsListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
@@ -8,7 +7,6 @@ import com.example.be_java_hisp_w23_g3.entity.Post;
 import com.example.be_java_hisp_w23_g3.entity.User;
 import com.example.be_java_hisp_w23_g3.exception.AlreadyExistsException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
-import com.example.be_java_hisp_w23_g3.exception.ValidationException;
 import com.example.be_java_hisp_w23_g3.repository.product.ProductRepository;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
@@ -129,6 +127,30 @@ class ProductServiceImplTests {
         assertEquals(3L, result.getPosts().get(0).getPostId());
         assertEquals(2L, result.getPosts().get(1).getPostId());
         assertEquals(1L, result.getPosts().get(2).getPostId());
+    }
+
+    @Test
+    void followedPostsList_ReturnsPostsWithinLastTwoWeeks() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
+
+        List<Post> posts = Arrays.asList(
+                new PostTestDataBuilder().postByDefault().withId(1L).withDate(LocalDate.now().minusDays(7)).build(),
+                new PostTestDataBuilder().postByDefault().withId(2L).withDate(LocalDate.now().minusDays(10)).build(),
+                new PostTestDataBuilder().postByDefault().withId(3L).withDate(LocalDate.now().minusWeeks(2).minusDays(1)).build(),
+                new PostTestDataBuilder().postByDefault().withId(4L).withDate(LocalDate.now().minusWeeks(3)).build()
+        );
+
+        when(productRepository.readBatchBySellerIds(Arrays.asList(1L, 2L))).thenReturn(posts);
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        FollowedPostsListDTO result = service.followedPostsList(userId, null);
+
+        assertNotNull(result);
+        assertEquals(userId, result.getUserId());
+        assertEquals(2, result.getPosts().size());
+        assertEquals(1L, result.getPosts().get(0).getPostId());
+        assertEquals(2L, result.getPosts().get(1).getPostId());
     }
 
     @Test

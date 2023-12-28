@@ -58,5 +58,4 @@ class ProductControllerTests {
         assertThrows(IllegalArgumentException.class, () -> controller.followedPostsList(userId, order));
         verify(productService, times(1)).followedPostsList(userId, order);
     }
-
 }
