@@ -3,6 +3,7 @@ package com.example.be_java_hisp_w23_g3.service.user;
 import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.exception.FollowingMyselfException;
 import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
 import com.example.be_java_hisp_w23_g3.exception.NotAFollowerException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
@@ -287,12 +288,19 @@ class UserServiceImplTests {
     }
 
     @Test
-    void followSeller_shouldNotWorkWhenSellerDoesNotExist(){
+    void followSeller_shouldThrowNotFoundException(){
         Long userId = 1L;
         Long sellerIdToFollow = 999L;
         when(sellerRepository.read(sellerIdToFollow)).thenThrow(NotFoundException.class);
         assertThrows(NotFoundException.class,() -> service.followSeller(userId,sellerIdToFollow));
         verify(sellerRepository,times(1)).read(sellerIdToFollow);
+    }
+
+    @Test
+    void followSeller_shouldThrowFollowingMyselfException(){
+        Long userId = 1L;
+        Long sellerIdToFollow = 1L;
+        assertThrows(FollowingMyselfException.class,() -> service.followSeller(userId,sellerIdToFollow));
     }
 
     @Test
