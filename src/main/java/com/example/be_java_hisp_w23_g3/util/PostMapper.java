@@ -1,16 +1,12 @@
 package com.example.be_java_hisp_w23_g3.util;
 
-import com.example.be_java_hisp_w23_g3.dto.ProductDTO;
 import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedPostsListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
 import com.example.be_java_hisp_w23_g3.entity.Post;
-import com.example.be_java_hisp_w23_g3.entity.Product;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.exception.ValidationException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
