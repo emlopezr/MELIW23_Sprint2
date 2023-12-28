@@ -270,8 +270,8 @@ class UserServiceImplTests {
     void followSeller_shouldWorkWhenSellerExists() {
         Long userId = 1L;
         Long sellerIdToFollow = 9L;
-        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").build();
-        Seller sellerToFollow = new SellerTestDataBuilder().sellerByDefault().withId(sellerIdToFollow).withUsername("Karla").build();
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
+        Seller sellerToFollow = new SellerTestDataBuilder().sellerByDefault().withId(sellerIdToFollow).build();
 
         when(userRepository.read(userId)).thenReturn(Optional.ofNullable(user));
         when(sellerRepository.read(sellerIdToFollow)).thenReturn(Optional.ofNullable(sellerToFollow));
@@ -303,7 +303,7 @@ class UserServiceImplTests {
     @Test
     void followSeller_shouldThrowAlreadyAFollowerException(){
         Long userId = 1L;
-        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).userWithFollowings().build();
         Seller sellerFollowed = user.getFollowing().stream().findFirst().get();
         Long sellerIdFollowed = sellerFollowed.getId();
         sellerFollowed.setFollower(new HashSet<>(Arrays.asList(user)));
@@ -316,7 +316,7 @@ class UserServiceImplTests {
     @Test
     void unfollowSeller_shouldWorkWhenSellerExistsOnFollowings() {
         Long userId = 1L;
-        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).userWithFollowings().build();
         Seller sellerToUnfollow = user.getFollowing().stream().findFirst().get();
         Long sellerIdToUnfollow = sellerToUnfollow.getId();
         sellerToUnfollow.setFollower(new HashSet<>(Arrays.asList(user)));
@@ -336,7 +336,7 @@ class UserServiceImplTests {
     void unfollowSeller_shouldThrowNotAFollowerException(){
         Long userId = 1L;
         Long sellerIdToUnfollow = 999L;
-        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).userWithFollowings().build();
 
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
         when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenThrow(NotAFollowerException.class);
