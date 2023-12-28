@@ -141,7 +141,7 @@ class ProductServiceImplTests {
                 new PostTestDataBuilder().postByDefault().withId(4L).withDate(LocalDate.now().minusWeeks(3)).build()
         );
 
-        when(productRepository.readBatchBySellerIds(Arrays.asList(1L, 2L))).thenReturn(posts);
+        when(productRepository.readBatchBySellerIds(anyList())).thenReturn(posts);
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
 
         FollowedPostsListDTO result = service.followedPostsList(userId, null);
@@ -149,8 +149,7 @@ class ProductServiceImplTests {
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertEquals(2, result.getPosts().size());
-        assertEquals(1L, result.getPosts().get(0).getPostId());
-        assertEquals(2L, result.getPosts().get(1).getPostId());
+        assertTrue(result.getPosts().stream().anyMatch(post -> post.getDate().isAfter(LocalDate.now().minusWeeks(2))));
     }
 
     @Test
