@@ -8,8 +8,7 @@ import lombok.*;
 import jakarta.validation.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Getter @Setter
+@Getter
 public class PostRequestDTO {
 
     @NotNull(message = "The user_id cannot be empty")

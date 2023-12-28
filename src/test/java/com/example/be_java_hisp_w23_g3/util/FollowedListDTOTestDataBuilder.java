@@ -1,14 +1,14 @@
 package com.example.be_java_hisp_w23_g3.util;
 
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedListDTO;
-import com.example.be_java_hisp_w23_g3.dto.response.SellerDTO;
+import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 
 import java.util.List;
 
 public class FollowedListDTOTestDataBuilder {
     public Long userID;
     public String userName;
-    public List<SellerDTO> followed;
+    public List<UserDTO> followed;
 
     public FollowedListDTOTestDataBuilder followedListDTOByDefault() {
         this.userID = 1L;
@@ -21,9 +21,9 @@ public class FollowedListDTOTestDataBuilder {
         this.userID = 1L;
         this.userName = "username1";
         this.followed = List.of(
-                SellerMapper.mapToDTO(new SellerTestDataBuilder().sellerByDefault().withId(101L).build()),
-                SellerMapper.mapToDTO(new SellerTestDataBuilder().sellerByDefault().withId(102L).build()),
-                SellerMapper.mapToDTO(new SellerTestDataBuilder().sellerByDefault().withId(103L).build())
+                UserMapper.mapToDTO(new SellerTestDataBuilder().sellerByDefault().withId(101L).build()),
+                UserMapper.mapToDTO(new SellerTestDataBuilder().sellerByDefault().withId(102L).build()),
+                UserMapper.mapToDTO(new SellerTestDataBuilder().sellerByDefault().withId(103L).build())
         );
         return this;
     }

@@ -7,8 +7,7 @@ import lombok.*;
 import jakarta.validation.constraints.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Getter @Setter
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDTO {
 

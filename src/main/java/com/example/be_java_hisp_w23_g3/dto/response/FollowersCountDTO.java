@@ -1,7 +1,6 @@
 package com.example.be_java_hisp_w23_g3.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 public class FollowersCountDTO {
     @JsonProperty("user_id")

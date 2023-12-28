@@ -11,12 +11,6 @@ public class Seller extends User {
     private Set<User> follower;
     private Map<Long, Post> posts;
 
-    private Seller(Long id, String username) {
-        super(id, username);
-        this.follower = new HashSet<>();
-        this.posts = new HashMap<>();
-    }
-
     private Seller(Long id, String username, Set<Seller> following) {
         super(id, username, following);
         this.follower = new HashSet<>();
@@ -51,7 +45,4 @@ public class Seller extends User {
         this.follower = follower;
     }
 
-    public void setPosts(Map<Long, Post> posts) {
-        this.posts = posts;
-    }
 }
