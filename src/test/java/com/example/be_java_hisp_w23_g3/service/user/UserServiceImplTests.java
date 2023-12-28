@@ -1,10 +1,10 @@
 package com.example.be_java_hisp_w23_g3.service.user;
 
 import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
-import com.example.be_java_hisp_w23_g3.exception.*;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
+import com.example.be_java_hisp_w23_g3.entity.user.User;
 import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.*;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
 import com.example.be_java_hisp_w23_g3.util.SellerTestDataBuilder;
@@ -310,7 +310,7 @@ class UserServiceImplTests {
 
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
         when(sellerRepository.read(sellerIdFollowed)).thenReturn(Optional.of(sellerFollowed));
-        assertThrows(AlreadyAFollowerException.class,() -> service.followSeller(userId,sellerIdFollowed));
+        assertThrows(AlreadyFollowingException.class,() -> service.followSeller(userId,sellerIdFollowed));
        }
 
     @Test
@@ -323,7 +323,7 @@ class UserServiceImplTests {
 
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
         when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenReturn(Optional.of(sellerToUnfollow));
-        MessageResponseDTO respond = service.unFollowSeller(userId, sellerIdToUnfollow);
+        MessageResponseDTO respond = service.unfollowSeller(userId, sellerIdToUnfollow);
 
         assertTrue(sellerToUnfollow.getFollower().isEmpty());
         assertFalse(user.getFollowing().contains(sellerToUnfollow));
@@ -339,9 +339,9 @@ class UserServiceImplTests {
         User user = new UserTestDataBuilder().userByDefault().withId(userId).userWithFollowings().build();
 
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
-        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenThrow(NotAFollowerException.class);
+        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenThrow(NotFollowingException.class);
 
-        assertThrows(NotAFollowerException.class,() -> service.unFollowSeller(userId,sellerIdToUnfollow));
+        assertThrows(NotFollowingException.class,() -> service.unfollowSeller(userId,sellerIdToUnfollow));
         verify(userRepository,times(1)).findSellerInFollowings(user, sellerIdToUnfollow);
     }
 
@@ -349,6 +349,6 @@ class UserServiceImplTests {
     void unfollowSeller_shouldThrowUnFollowingMyselfException(){
         Long userId = 1L;
         Long sellerIdToUnFollow = 1L;
-        assertThrows(UnFollowingMyselfException.class,() -> service.unFollowSeller(userId,sellerIdToUnFollow));
+        assertThrows(UnfollowingMyselfException.class,() -> service.unfollowSeller(userId,sellerIdToUnFollow));
     }
 }

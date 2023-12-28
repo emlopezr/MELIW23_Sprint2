@@ -1,6 +1,7 @@
 package com.example.be_java_hisp_w23_g3.exception;
 
 import com.example.be_java_hisp_w23_g3.dto.response.ExceptionDTO;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -70,13 +71,13 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
-    @ExceptionHandler(NotAFollowerException.class)
-    public ResponseEntity<ExceptionDTO> notAFollowerException(NotAFollowerException e){
+    @ExceptionHandler(NotFollowingException.class)
+    public ResponseEntity<ExceptionDTO> notAFollowerException(NotFollowingException e){
         ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
-    @ExceptionHandler(UnFollowingMyselfException.class)
-    public ResponseEntity<ExceptionDTO> unFollowingMyselfException(UnFollowingMyselfException e){
+    @ExceptionHandler(UnfollowingMyselfException.class)
+    public ResponseEntity<ExceptionDTO> unFollowingMyselfException(UnfollowingMyselfException e){
         ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
@@ -85,8 +86,8 @@ public class ExceptionController {
         ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
-    @ExceptionHandler(AlreadyAFollowerException.class)
-    public ResponseEntity<ExceptionDTO> alreadyAFollowerException(AlreadyAFollowerException e){
+    @ExceptionHandler(AlreadyFollowingException.class)
+    public ResponseEntity<ExceptionDTO> alreadyAFollowerException(AlreadyFollowingException e){
         ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }

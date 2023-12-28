@@ -1,6 +1,6 @@
 package com.example.be_java_hisp_w23_g3.util;
 
-import com.example.be_java_hisp_w23_g3.entity.Product;
+import com.example.be_java_hisp_w23_g3.entity.product.Product;
 
 public class ProductTestDataBuilder {
     private Long id;

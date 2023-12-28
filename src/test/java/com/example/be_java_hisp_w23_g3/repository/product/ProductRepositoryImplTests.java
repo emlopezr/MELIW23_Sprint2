@@ -1,7 +1,7 @@
 package com.example.be_java_hisp_w23_g3.repository.product;
 
-import com.example.be_java_hisp_w23_g3.entity.Post;
-import com.example.be_java_hisp_w23_g3.entity.Seller;
+import com.example.be_java_hisp_w23_g3.entity.product.Post;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
 import com.example.be_java_hisp_w23_g3.util.PostTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.ProductTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.SellerTestDataBuilder;

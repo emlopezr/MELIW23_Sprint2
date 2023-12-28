@@ -1,13 +1,13 @@
 package com.example.be_java_hisp_w23_g3.service.user;
 
 import com.example.be_java_hisp_w23_g3.dto.response.*;
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
-import com.example.be_java_hisp_w23_g3.exception.*;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
+import com.example.be_java_hisp_w23_g3.entity.user.User;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.*;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
-import com.example.be_java_hisp_w23_g3.util.DTOMapper;
-import com.example.be_java_hisp_w23_g3.util.UserMapper;
+import com.example.be_java_hisp_w23_g3.util.mapper.DTOMapper;
+import com.example.be_java_hisp_w23_g3.util.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         User user = getUser(userId);
 
         if(user.getFollowing().contains(sellerToFollow)){
-            throw new AlreadyAFollowerException("This seller is already part of your followings");
+            throw new AlreadyFollowingException("This seller is already part of your followings");
         }
         sellerToFollow.getFollower().add(user);
         user.getFollowing().add(sellerToFollow);
@@ -65,14 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MessageResponseDTO unFollowSeller(Long userId, Long userIdToUnfollow) {
+    public MessageResponseDTO unfollowSeller(Long userId, Long userIdToUnfollow) {
         if(userId.equals(userIdToUnfollow)){
-            throw new UnFollowingMyselfException("You can't unfollow yourself");
+            throw new UnfollowingMyselfException("You can't unfollow yourself");
         }
 
         User user = getUser(userId);
         Seller sellerToUnfollow = userRepository.findSellerInFollowings(user,userIdToUnfollow)
-                .orElseThrow(() -> new NotAFollowerException("Seller with id " + userIdToUnfollow + " is not part of your followings"));
+                .orElseThrow(() -> new NotFollowingException("Seller with id " + userIdToUnfollow + " is not part of your followings"));
 
         sellerToUnfollow.getFollower().remove(user);
         user.getFollowing().remove(sellerToUnfollow);

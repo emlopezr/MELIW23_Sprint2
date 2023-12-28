@@ -2,6 +2,7 @@ package com.example.be_java_hisp_w23_g3.util;
 
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
+import com.example.be_java_hisp_w23_g3.util.mapper.UserMapper;
 
 import java.util.List;
 

@@ -1,18 +1,13 @@
 package com.example.be_java_hisp_w23_g3.repository.user;
 
 
-import com.example.be_java_hisp_w23_g3.entity.Post;
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
+import com.example.be_java_hisp_w23_g3.entity.user.User;
 
-import com.example.be_java_hisp_w23_g3.util.PostTestDataBuilder;
-import com.example.be_java_hisp_w23_g3.util.ProductTestDataBuilder;
-import com.example.be_java_hisp_w23_g3.util.SellerTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.UserTestDataBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

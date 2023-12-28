@@ -1,10 +1,10 @@
 package com.example.be_java_hisp_w23_g3.repository;
 
 
-import com.example.be_java_hisp_w23_g3.entity.Post;
-import com.example.be_java_hisp_w23_g3.entity.Product;
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
+import com.example.be_java_hisp_w23_g3.entity.product.Post;
+import com.example.be_java_hisp_w23_g3.entity.product.Product;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
+import com.example.be_java_hisp_w23_g3.entity.user.User;
 import com.example.be_java_hisp_w23_g3.repository.product.ProductRepository;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
@@ -15,13 +15,13 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Component
-public class DataLoader {
+public class SampleDataLoader {
 
     UserRepository userRepository;
     SellerRepository sellerRepository;
     ProductRepository productRepository;
 
-    public DataLoader(UserRepository userRepository, SellerRepository sellerRepository, ProductRepository productRepository) {
+    public SampleDataLoader(UserRepository userRepository, SellerRepository sellerRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.sellerRepository = sellerRepository;
         this.productRepository = productRepository;

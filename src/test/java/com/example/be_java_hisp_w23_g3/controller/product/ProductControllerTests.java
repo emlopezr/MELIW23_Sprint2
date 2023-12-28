@@ -4,8 +4,8 @@ import com.example.be_java_hisp_w23_g3.controller.ProductController;
 import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedPostsListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
-import com.example.be_java_hisp_w23_g3.exception.AlreadyExistsException;
-import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.AlreadyExistsException;
+import com.example.be_java_hisp_w23_g3.exception.exceptions.NotFoundException;
 import com.example.be_java_hisp_w23_g3.service.product.ProductService;
 import com.example.be_java_hisp_w23_g3.util.FollowedPostsListDTOTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.PostRequestDTOTestDataBuilder;
@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
