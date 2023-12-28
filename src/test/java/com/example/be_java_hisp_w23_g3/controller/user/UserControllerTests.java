@@ -5,6 +5,7 @@ import com.example.be_java_hisp_w23_g3.controller.UserController;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersCountDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
+import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
 import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
 import com.example.be_java_hisp_w23_g3.service.user.UserService;
 import com.example.be_java_hisp_w23_g3.util.FollowedListDTOTestDataBuilder;
@@ -180,6 +181,90 @@ class UserControllerTests {
         assertThrows(ConstraintViolationException.class, () -> controller.getFollowersCount(userId));
 
         verify(userService).getFollowersCount(userId);
+    }
+
+    @Test
+    void followSeller_shouldReturnMessageResponseDTOForValidUserIds() {
+    Long userId = 1L;
+    Long userIdToFollow = 2L;
+
+    MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully followed.");
+
+    when(userService.followSeller(userId, userIdToFollow)).thenReturn(messageResponseDTO);
+
+    ResponseEntity<MessageResponseDTO> response = controller.followSeller(userId, userIdToFollow);
+
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(messageResponseDTO, response.getBody());
+    verify(userService).followSeller(userId, userIdToFollow);
+}
+
+    @Test
+    void followSeller_shouldThrowExceptionForInvalidUserId() {
+        Long userId = -1L;
+        Long userIdToFollow = 2L;
+
+        doThrow(new ConstraintViolationException("The follower user_id must be greater than zero", new HashSet<>()))
+                .when(userService).followSeller(userId, userIdToFollow);
+
+        assertThrows(ConstraintViolationException.class, () -> controller.followSeller(userId, userIdToFollow));
+
+        verify(userService).followSeller(userId, userIdToFollow);
+    }
+
+    @Test
+    void followSeller_shouldThrowExceptionForInvalidUserIdToFollow() {
+        Long userId = 1L;
+        Long userIdToFollow = -1L;
+
+        doThrow(new ConstraintViolationException("The user_id to follow must be greater than zero", new HashSet<>()))
+                .when(userService).followSeller(userId, userIdToFollow);
+
+        assertThrows(ConstraintViolationException.class, () -> controller.followSeller(userId, userIdToFollow));
+
+        verify(userService).followSeller(userId, userIdToFollow);
+    }
+
+    @Test
+    void unFollowSeller_shouldReturnMessageResponseDTOForValidUserIds() {
+    Long userId = 1L;
+    Long userIdToUnfollow = 2L;
+
+    MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully unfollowed.");
+
+    when(userService.unFollowSeller(userId, userIdToUnfollow)).thenReturn(messageResponseDTO);
+
+    ResponseEntity<MessageResponseDTO> response = controller.unFollowSeller(userId, userIdToUnfollow);
+
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(messageResponseDTO, response.getBody());
+    verify(userService).unFollowSeller(userId, userIdToUnfollow);
+}
+
+    @Test
+    void unFollowSeller_shouldThrowExceptionForInvalidUserId() {
+        Long userId = -1L;
+        Long userIdToUnfollow = 2L;
+
+        doThrow(new ConstraintViolationException("The follower user_id must be greater than zero", new HashSet<>()))
+                .when(userService).unFollowSeller(userId, userIdToUnfollow);
+
+        assertThrows(ConstraintViolationException.class, () -> controller.unFollowSeller(userId, userIdToUnfollow));
+
+        verify(userService).unFollowSeller(userId, userIdToUnfollow);
+    }
+
+    @Test
+    void unFollowSeller_shouldThrowExceptionForInvalidUserIdToUnfollow() {
+        Long userId = 1L;
+        Long userIdToUnfollow = -1L;
+
+        doThrow(new ConstraintViolationException("The user_id to unfollow must be greater than zero", new HashSet<>()))
+                .when(userService).unFollowSeller(userId, userIdToUnfollow);
+
+        assertThrows(ConstraintViolationException.class, () -> controller.unFollowSeller(userId, userIdToUnfollow));
+
+        verify(userService).unFollowSeller(userId, userIdToUnfollow);
     }
 
 }

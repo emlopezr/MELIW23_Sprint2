@@ -1,6 +1,7 @@
 package com.example.be_java_hisp_w23_g3.controller;
 
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersCountDTO;
+import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
 import com.example.be_java_hisp_w23_g3.service.user.UserService;
 
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
@@ -47,14 +48,14 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
-    public ResponseEntity<?> followSeller(
+    public ResponseEntity<MessageResponseDTO> followSeller(
         @PathVariable @Positive(message = "The follower user_id must be greater than zero") Long userId,
         @PathVariable @Positive(message = "The user_id to follow must be greater than zero") Long userIdToFollow
     ) {
         return new ResponseEntity<>(userService.followSeller(userId, userIdToFollow), HttpStatus.OK);
     }
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> unFollowSeller(
+    public ResponseEntity<MessageResponseDTO> unFollowSeller(
         @PathVariable @Positive(message = "The follower user_id must be greater than zero") Long userId,
         @PathVariable @Positive(message = "The user_id to unfollow must be greater than zero") Long userIdToUnfollow
     ) {
