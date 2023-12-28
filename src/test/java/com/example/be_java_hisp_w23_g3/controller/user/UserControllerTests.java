@@ -3,17 +3,24 @@ package com.example.be_java_hisp_w23_g3.controller.user;
 
 import com.example.be_java_hisp_w23_g3.controller.UserController;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedListDTO;
+import com.example.be_java_hisp_w23_g3.dto.response.FollowersCountDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
 import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
 import com.example.be_java_hisp_w23_g3.service.user.UserService;
 import com.example.be_java_hisp_w23_g3.util.FollowedListDTOTestDataBuilder;
 import com.example.be_java_hisp_w23_g3.util.FollowersListDTOTestDataBuilder;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -146,6 +153,33 @@ class UserControllerTests {
         assertThrows(InvalidOrderException.class, () -> controller.getFollowedSellerList(userId, order));
 
         verify(userService).getFollowedSellersList(userId, order);
+    }
+
+    @Test
+    void getFollowersCount_shouldReturnFollowersCountForValidUserId() {
+    Long userId = 1L;
+    FollowersCountDTO followersCountDTO = new FollowersCountDTO(
+            userId,"username",5);
+
+    when(userService.getFollowersCount(userId)).thenReturn(followersCountDTO);
+
+    ResponseEntity<FollowersCountDTO> response = controller.getFollowersCount(userId);
+
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(followersCountDTO, response.getBody());
+    verify(userService).getFollowersCount(userId);
+    }
+
+    @Test
+    void getFollowersCount_shouldThrowExceptionForInvalidUserId() {
+        Long userId = -1L;
+
+        doThrow(new ConstraintViolationException("The user_id must be greater than zero", new HashSet<>()))
+                .when(userService).getFollowersCount(userId);
+
+        assertThrows(ConstraintViolationException.class, () -> controller.getFollowersCount(userId));
+
+        verify(userService).getFollowersCount(userId);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.be_java_hisp_w23_g3.controller;
 
+import com.example.be_java_hisp_w23_g3.dto.response.FollowersCountDTO;
 import com.example.be_java_hisp_w23_g3.service.user.UserService;
 
 import com.example.be_java_hisp_w23_g3.dto.response.FollowersListDTO;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<?> getFollowersCount(
+    public ResponseEntity<FollowersCountDTO> getFollowersCount(
         @PathVariable @Positive(message = "The user_id must be greater than zero") Long userId
     ) {
         return new ResponseEntity<>(userService.getFollowersCount(userId), HttpStatus.OK);
