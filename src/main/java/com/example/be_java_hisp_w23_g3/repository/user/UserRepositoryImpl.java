@@ -1,8 +1,7 @@
 package com.example.be_java_hisp_w23_g3.repository.user;
 
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
-import jakarta.annotation.PostConstruct;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
+import com.example.be_java_hisp_w23_g3.entity.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -33,8 +32,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User entity) {
-
+    public void update(Long id, User entity) {
+        users.stream().filter(user -> user.getId().equals(id)).findFirst()
+                .ifPresent(user -> {
+                    user.setUsername(entity.getUsername());
+                    user.setFollowing(entity.getFollowing());
+                });
     }
 
     @Override

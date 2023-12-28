@@ -1,9 +1,9 @@
 
-# SocialMeli Equipo 3 - Sprint 1 W23
+# SocialMeli Equipo 3 - Sprint 2 W23
 
 ## Descripcion del Problema
 
-Mercado Libre sigue creciendo y para el año que viene  tiene como objetivo empezar a implementar una serie de herramientas que permitan a los compradores y vendedores tener una experiencia totalmente innovadora, en donde el lazo que los una sea mucho más cercano. La fecha de lanzamiento se aproxima, por lo cual es necesaria la presentación de una versión Beta de lo que va a ser conocido como **SocialMeli**, en donde los compradores van a poder seguir a sus vendedores favoritos y enterarse de todas las novedades que los mismos posteen.
+**SocialMeli**, la nueva implementación de MercadoLibre que fue realizada por el equipo de desarrollo “Bootcamp” se ha convertido en ¡Todo un éxito!. Dado esto y a que MeLi tiene unos estándares de calidad muy altos con respecto a los productos de software que utiliza, estableció una serie de validaciones que considera que sean necesarias tener en cuenta a la hora de incorporar datos como así también diferentes test unitarios que aseguren el correcto funcionamiento de cada una de las funcionalidades que incluye.
 
 ## Definiciones de Equipo
 
@@ -24,6 +24,21 @@ Para hacer pruebas se recomienda usar Postman. Todos los endpoints y casos de pr
 | US0007        | Poder realizar la acción de “Unfollow” (dejar de seguir) a un determinado vendedor.                                   | Diana Isabel Ramírez García                        |
 | US0008        | Ordenamiento alfabético ascendente y descendente                                                                      | Miguel Ochoa Mejía                                 |
 | US0009        | Ordenamiento por fecha ascendente y descendente                                                                       | Sebastian Ospina García                            |
+
+## Tests y Responsables
+| Requerimiento | Descripción                                                                                                                                                              | Comportamiento Esperado                                                                                                                            | Responsable                   |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------|
+| T-0001        | Verificar que el usuario a seguir exista. **(US-0001)**                                                                                                                  | **Se cumple:**  Permite continuar con normalidad. <br /> **No se cumple:** Notifica la no existencia mediante una excepción.                       | Diana Isabel Ramírez García   |
+| T-0002        | Verificar que el usuario a dejar de seguir exista. **(US-0007)**                                                                                                         | **Se cumple:**  Permite continuar con normalidad. <br /> **No se cumple:** Notifica la no existencia mediante una excepción.                       | Diana Isabel Ramírez García   |
+| T-0003        | Verificar que el tipo de ordenamiento alfabético exista **(US-0008)**                                                                                                    | **Se cumple:**  Permite continuar con normalidad. <br /> **No se cumple:** Notifica la no existencia mediante una excepción.                       | Miguel Ochoa Mejía            |
+| T-0004        | Verificar el correcto ordenamiento ascendente y descendente por nombre. **(US-0008)**                                                                                    | Devuelve la lista ordenada según el criterio solicitado                                                                                            | Miguel Ochoa Mejía            |
+| T-0005        | Verificar que el tipo de ordenamiento por fecha exista **(US-0009)**                                                                                                     | **Se cumple:**  Permite continuar con normalidad. <br /> **No se cumple:** Notifica la no existencia mediante una excepción.                       | Sebastian Ospina García       |
+| T-0006        | Verificar el correcto ordenamiento ascendente y descendente por fecha. **(US-0009)**                                                                                     | Verificar el correcto ordenamiento ascendente y descendente por fecha. **(US-0009)**                                                               | Sebastian Ospina García       |
+| T-0007        | Verificar que la cantidad de seguidores de un determinado usuario sea correcta. **(US-0002)**                                                                            | Devuelve el cálculo correcto del total de la cantidad de seguidores que posee un usuario.                                                          | Jhon Edison García García     |
+| T-0008        | Verificar que la consulta de publicaciones realizadas en las últimas dos semanas de un determinado vendedor sean efectivamente de las últimas dos semanas. **(US-0006)** | Devuelve únicamente los datos de las publicaciones que tengan fecha de publicación dentro de las últimas dos semanas a partir del día de la fecha. | Jorge Rodrigo Marcos Martínez |
+| Validaciones  | Añadir las validaciones necesarias a los DTOs                                                                                                                            | **Se cumple:**  Permite continuar con normalidad. <br /> **No se cumple:** Notifica la no existencia mediante una excepción.                       | Emmanuel López Rodríguez      |
+
+
 
 ## Integrantes
 

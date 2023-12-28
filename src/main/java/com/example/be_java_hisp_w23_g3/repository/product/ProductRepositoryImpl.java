@@ -1,6 +1,6 @@
 package com.example.be_java_hisp_w23_g3.repository.product;
 
-import com.example.be_java_hisp_w23_g3.entity.Post;
+import com.example.be_java_hisp_w23_g3.entity.product.Post;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -34,13 +34,20 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public void update(Post entity) {
-
+    public void update(Long id, Post entity) {
+        posts.stream().filter(post -> post.getId().equals(id)).findFirst()
+                .ifPresent(post -> {
+                    post.setProduct(entity.getProduct());
+                    post.setDate(entity.getDate());
+                    post.setCategory(entity.getCategory());
+                    post.setPrice(entity.getPrice());
+                    post.setSeller(entity.getSeller());
+                });
     }
 
     @Override
     public void delete(Long aLong) {
-
+        posts.removeIf(post -> post.getId().equals(aLong));
     }
 
     @Override

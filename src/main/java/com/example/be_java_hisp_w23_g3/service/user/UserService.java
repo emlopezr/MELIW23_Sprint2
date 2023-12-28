@@ -12,5 +12,5 @@ public interface UserService {
 
     MessageResponseDTO followSeller(Long userId, Long userIdToFollow);
 
-    MessageResponseDTO unFollowSeller(Long userId, Long userIdToUnfollow);
+    MessageResponseDTO unfollowSeller(Long userId, Long userIdToUnfollow);
 }

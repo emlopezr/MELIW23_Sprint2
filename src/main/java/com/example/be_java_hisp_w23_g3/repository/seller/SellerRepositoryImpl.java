@@ -1,8 +1,6 @@
 package com.example.be_java_hisp_w23_g3.repository.seller;
 
-import com.example.be_java_hisp_w23_g3.entity.Seller;
-import com.example.be_java_hisp_w23_g3.entity.User;
-import jakarta.annotation.PostConstruct;
+import com.example.be_java_hisp_w23_g3.entity.user.Seller;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -34,13 +32,19 @@ public class SellerRepositoryImpl implements SellerRepository{
     }
 
     @Override
-    public void update(Seller entity) {
-
+    public void update(Long id, Seller entity) {
+        sellers.stream().filter(seller -> seller.getId().equals(id)).findFirst()
+                .ifPresent(seller -> {
+                    seller.setUsername(entity.getUsername());
+                    seller.setFollower(entity.getFollower());
+                    seller.setFollowing(entity.getFollowing());
+                    seller.setPosts(entity.getPosts());
+                });
     }
 
     @Override
     public void delete(Long aLong) {
-
+        sellers.removeIf(seller -> seller.getId().equals(aLong));
     }
 
 }
