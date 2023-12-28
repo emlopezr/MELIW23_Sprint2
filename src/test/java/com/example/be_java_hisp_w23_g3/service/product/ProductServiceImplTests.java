@@ -130,7 +130,7 @@ class ProductServiceImplTests {
         assertEquals(2L, result.getPosts().get(1).getPostId());
         assertEquals(1L, result.getPosts().get(2).getPostId());
     }
-<<<<<<< HEAD
+
     @Test
     void getFollowedPosts_ReturnsPostsWithinLastTwoWeeks() {
         Long userId = 1L;
@@ -151,9 +151,6 @@ class ProductServiceImplTests {
         assertEquals(1L, result.get(0).getId());
         assertEquals(2L, result.get(1).getId());
     }
-
-=======
-
     @Test
     void postProduct_shouldReturnCorrectDTOWhenProductIsPosted() {
         Long userId = 1L;
@@ -176,7 +173,7 @@ class ProductServiceImplTests {
         assertEquals(post.getCategory(), result.getCategory());
         assertEquals(post.getPrice(), result.getPrice());
     }
-
+    
     @Test
     void postProduct_shouldThrowNotFoundExceptionWhenUserDoesNotExist() {
         Long userId = 1L;
@@ -198,5 +195,4 @@ class ProductServiceImplTests {
 
         assertThrows(AlreadyExistsException.class, () -> service.postProduct(request));
     }
->>>>>>> develop
 }
