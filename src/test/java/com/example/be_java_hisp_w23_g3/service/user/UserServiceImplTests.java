@@ -3,9 +3,7 @@ package com.example.be_java_hisp_w23_g3.service.user;
 import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
-import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
-import com.example.be_java_hisp_w23_g3.exception.NotAFollowerException;
-import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
+import com.example.be_java_hisp_w23_g3.exception.*;
 import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
@@ -325,5 +323,43 @@ class UserServiceImplTests {
 
         assertThrows(NotAFollowerException.class,() -> service.unFollowSeller(userId,sellerIdToUnfollow));
         verify(userRepository,times(1)).findSellerInFollowings(user, sellerIdToUnfollow);
+    }
+
+    @Test
+    void followSeller_shouldThrowFollowingMyselfExceptionWhenUserTriesToFollowThemselves() {
+    Long userId = 1L;
+    assertThrows(FollowingMyselfException.class, () -> service.followSeller(userId, userId));
+    }
+
+    @Test
+    void followSeller_shouldThrowAlreadyAFollowerExceptionWhenUserAlreadyFollowsTheSeller() {
+        Long userId = 1L;
+        Long sellerIdToFollow = 2L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
+        Seller sellerToFollow = new SellerTestDataBuilder().sellerByDefault().withId(sellerIdToFollow).build();
+        user.getFollowing().add(sellerToFollow);
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+        when(sellerRepository.read(sellerIdToFollow)).thenReturn(Optional.of(sellerToFollow));
+
+        assertThrows(AlreadyAFollowerException.class, () -> service.followSeller(userId, sellerIdToFollow));
+    }
+
+    @Test
+    void unFollowSeller_shouldThrowUnFollowingMyselfExceptionWhenUserTriesToUnfollowThemselves() {
+    Long userId = 1L;
+    assertThrows(UnFollowingMyselfException.class, () -> service.unFollowSeller(userId, userId));
+    }
+
+    @Test
+    void unFollowSeller_shouldThrowNotAFollowerExceptionWhenUserDoesNotFollowTheSeller() {
+    Long userId = 1L;
+    Long sellerId = 2L;
+    User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
+
+    when(userRepository.read(userId)).thenReturn(Optional.of(user));
+    when(userRepository.findSellerInFollowings(user, sellerId)).thenReturn(Optional.empty());
+
+    assertThrows(NotAFollowerException.class, () -> service.unFollowSeller(userId, sellerId));
     }
 }
