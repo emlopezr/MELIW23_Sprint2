@@ -4,6 +4,7 @@ import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
 import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
+import com.example.be_java_hisp_w23_g3.exception.NotAFollowerException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
 import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
@@ -16,9 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -292,5 +293,37 @@ class UserServiceImplTests {
         when(sellerRepository.read(sellerIdToFollow)).thenThrow(NotFoundException.class);
         assertThrows(NotFoundException.class,() -> service.followSeller(userId,sellerIdToFollow));
         verify(sellerRepository,times(1)).read(sellerIdToFollow);
+    }
+
+    @Test
+    void unfollowSeller_shouldWorkWhenSellerExistsOnFollowings() {
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+        Seller sellerToUnfollow = user.getFollowing().stream().findFirst().get();
+        Long sellerIdToUnfollow = sellerToUnfollow.getId();
+        sellerToUnfollow.setFollower(new HashSet<>(Arrays.asList(user)));
+
+        when(userRepository.read(userId)).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenReturn(Optional.ofNullable(sellerToUnfollow));
+        MessageResponseDTO respond = service.unFollowSeller(userId, sellerIdToUnfollow);
+
+        assertEquals(2,user.getFollowing().size());
+        assertTrue(sellerToUnfollow.getFollower().isEmpty());
+        assertEquals(new MessageResponseDTO("You have just unfollowed a seller"), respond);
+        verify(userRepository,times(1)).findSellerInFollowings(user,sellerIdToUnfollow);
+        verify(userRepository, times(1)).read(userId);
+    }
+
+    @Test
+    void unfollowSeller_shouldThrowNotAFollowerException(){
+        Long userId = 1L;
+        Long sellerIdToUnfollow = 999L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenThrow(NotAFollowerException.class);
+
+        assertThrows(NotAFollowerException.class,() -> service.unFollowSeller(userId,sellerIdToUnfollow));
+        verify(userRepository,times(1)).findSellerInFollowings(user, sellerIdToUnfollow);
     }
 }
