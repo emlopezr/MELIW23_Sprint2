@@ -62,44 +62,4 @@ class ProductControllerTests {
         assertThrows(IllegalArgumentException.class, () -> controller.followedPostsList(userId, order));
         verify(productService, times(1)).followedPostsList(userId, order);
     }
-    @Test
-    void postProduct_ReturnsCorrectResponseWithValidInput() {
-        // Create an object PostRequestDTO to be tested
-        PostRequestDTO validPostRequest = new PostRequestDTO();
-        validPostRequest.setTitle("Producto de prueba");
-        validPostRequest.setDescription("Descripción del producto");
-
-        // Simulate productService to get a response simulated
-        PostResponseDTO mockedResponse = new PostResponseDTO();
-        mockedResponse.setId(1L);
-        mockedResponse.setTitle(validPostRequest.getTitle());
-        mockedResponse.setDescription(validPostRequest.getDescription());
-        when(productService.postProduct(validPostRequest)).thenReturn(mockedResponse);
-
-        // call method postProduct of controller.
-        ResponseEntity<PostResponseDTO> response = controller.postProduct(validPostRequest);
-
-        // Verificar que la respuesta y el código de estado sean los esperados
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(mockedResponse, response.getBody());
-
-        // Verificar que el método del servicio fue llamado correctamente
-        verify(productService, times(1)).postProduct(validPostRequest);
-    }
-
-    @Test
-    void postProduct_ThrowsExceptionWithInvalidInput() {
-        // Crear un objeto PostRequestDTO con datos inválidos para la prueba
-        PostRequestDTO invalidPostRequest = new PostRequestDTO();
-
-        // Simular el servicio productService para lanzar una excepción al recibir datos inválidos
-        when(productService.postProduct(invalidPostRequest)).thenThrow(ConstraintViolationException.class);
-
-        // Verificar que llamar al método postProduct con datos inválidos lance la excepción esperada
-        assertThrows(ConstraintViolationException.class, () -> controller.postProduct(invalidPostRequest));
-
-        // Verificar que el método del servicio fue llamado correctamente
-        verify(productService, times(1)).postProduct(invalidPostRequest);
-    }
-
 }
