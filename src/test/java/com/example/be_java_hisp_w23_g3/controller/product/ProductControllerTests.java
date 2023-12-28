@@ -1,18 +1,14 @@
 package com.example.be_java_hisp_w23_g3.controller.product;
 
 import com.example.be_java_hisp_w23_g3.controller.ProductController;
-import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedPostsListDTO;
-import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
 import com.example.be_java_hisp_w23_g3.service.product.ProductService;
 import com.example.be_java_hisp_w23_g3.util.FollowedPostsListDTOTestDataBuilder;
-import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,6 +1,5 @@
 package com.example.be_java_hisp_w23_g3.service.product;
 
-import com.example.be_java_hisp_w23_g3.dto.ProductDTO;
 import com.example.be_java_hisp_w23_g3.dto.request.PostRequestDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.FollowedPostsListDTO;
 import com.example.be_java_hisp_w23_g3.dto.response.PostResponseDTO;
@@ -8,7 +7,6 @@ import com.example.be_java_hisp_w23_g3.entity.Post;
 import com.example.be_java_hisp_w23_g3.entity.User;
 import com.example.be_java_hisp_w23_g3.exception.AlreadyExistsException;
 import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
-import com.example.be_java_hisp_w23_g3.exception.ValidationException;
 import com.example.be_java_hisp_w23_g3.repository.product.ProductRepository;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
@@ -173,7 +171,7 @@ class ProductServiceImplTests {
         assertEquals(post.getCategory(), result.getCategory());
         assertEquals(post.getPrice(), result.getPrice());
     }
-    
+
     @Test
     void postProduct_shouldThrowNotFoundExceptionWhenUserDoesNotExist() {
         Long userId = 1L;
