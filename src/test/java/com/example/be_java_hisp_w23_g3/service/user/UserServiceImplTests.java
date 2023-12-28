@@ -273,12 +273,12 @@ class UserServiceImplTests {
         User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
         Seller sellerToFollow = new SellerTestDataBuilder().sellerByDefault().withId(sellerIdToFollow).build();
 
-        when(userRepository.read(userId)).thenReturn(Optional.ofNullable(user));
-        when(sellerRepository.read(sellerIdToFollow)).thenReturn(Optional.ofNullable(sellerToFollow));
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+        when(sellerRepository.read(sellerIdToFollow)).thenReturn(Optional.of(sellerToFollow));
         MessageResponseDTO respond = service.followSeller(userId, sellerIdToFollow);
 
-        assertEquals(user, sellerToFollow.getFollower().stream().findFirst().get());
-        assertEquals(sellerToFollow, user.getFollowing().stream().findFirst().get());
+        assertTrue(user.getFollowing().contains(sellerToFollow));
+        assertTrue(sellerToFollow.getFollower().contains(user));
         assertEquals(new MessageResponseDTO("Following a new Seller!"), respond);
         verify(sellerRepository,times(1)).read(sellerIdToFollow);
         verify(userRepository, times(1)).read(userId);
@@ -321,12 +321,12 @@ class UserServiceImplTests {
         Long sellerIdToUnfollow = sellerToUnfollow.getId();
         sellerToUnfollow.setFollower(new HashSet<>(Arrays.asList(user)));
 
-        when(userRepository.read(userId)).thenReturn(Optional.ofNullable(user));
-        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenReturn(Optional.ofNullable(sellerToUnfollow));
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findSellerInFollowings(user, sellerIdToUnfollow)).thenReturn(Optional.of(sellerToUnfollow));
         MessageResponseDTO respond = service.unFollowSeller(userId, sellerIdToUnfollow);
 
-        assertEquals(2,user.getFollowing().size());
         assertTrue(sellerToUnfollow.getFollower().isEmpty());
+        assertFalse(user.getFollowing().contains(sellerToUnfollow));
         assertEquals(new MessageResponseDTO("You have just unfollowed a seller"), respond);
         verify(userRepository,times(1)).findSellerInFollowings(user,sellerIdToUnfollow);
         verify(userRepository, times(1)).read(userId);
