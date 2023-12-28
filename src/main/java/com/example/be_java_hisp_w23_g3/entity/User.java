@@ -52,4 +52,8 @@ public class User {
     public void setFollowing(Set<Seller> following) {
         this.following = following;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
