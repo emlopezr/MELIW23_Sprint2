@@ -344,4 +344,11 @@ class UserServiceImplTests {
         assertThrows(NotAFollowerException.class,() -> service.unFollowSeller(userId,sellerIdToUnfollow));
         verify(userRepository,times(1)).findSellerInFollowings(user, sellerIdToUnfollow);
     }
+
+    @Test
+    void unfollowSeller_shouldThrowUnFollowingMyselfException(){
+        Long userId = 1L;
+        Long sellerIdToUnFollow = 1L;
+        assertThrows(UnFollowingMyselfException.class,() -> service.unFollowSeller(userId,sellerIdToUnFollow));
+    }
 }
