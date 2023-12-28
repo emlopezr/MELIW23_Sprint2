@@ -19,19 +19,19 @@ public class UserMapper {
         if (ORDER_NAME_ASC.equalsIgnoreCase(order))
             return new FollowedListDTO(user.getId(), user.getUsername(), user.getFollowing().stream()
                     .sorted(Comparator.comparing(User::getUsername))
-                    .map(SellerMapper::mapToDTO).toList());
+                    .map(UserMapper::mapToDTO).toList());
 
         if (ORDER_NAME_DESC.equalsIgnoreCase(order))
             return new FollowedListDTO(user.getId(), user.getUsername(), user.getFollowing().stream()
                     .sorted(Comparator.comparing(User::getUsername).reversed())
-                    .map(SellerMapper::mapToDTO).toList());
+                    .map(UserMapper::mapToDTO).toList());
 
         if (order != null)
             throw new InvalidOrderException(
                     "The 'order' parameter is invalid. The permitted values are 'name_asc' or 'name_desc'.");
 
         return new FollowedListDTO(user.getId(), user.getUsername(), user.getFollowing().stream()
-                .map(SellerMapper::mapToDTO).toList());
+                .map(UserMapper::mapToDTO).toList());
     }
 
     public static FollowersListDTO mapToFollowersListDTO(Seller seller, String order) {
