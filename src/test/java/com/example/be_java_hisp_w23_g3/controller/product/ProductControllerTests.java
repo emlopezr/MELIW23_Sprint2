@@ -93,5 +93,4 @@ class ProductControllerTests {
 
         assertThrows(AlreadyExistsException.class, () -> controller.postProduct(postRequestDTO));
     }
-
 }
