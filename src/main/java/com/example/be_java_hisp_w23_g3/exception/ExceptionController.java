@@ -20,7 +20,7 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e){
         ValidationExceptionDTO validationExceptionDto = new ValidationExceptionDTO(
-            "Se han producido errores de validación",
+            "Validation errors have occurred",
             e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationExceptionDto);
@@ -29,7 +29,7 @@ public class ExceptionController {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> constraintViolationException(ConstraintViolationException e){
         ValidationExceptionDTO validationExceptionDto = new ValidationExceptionDTO(
-            "Se han producido errores de validación",
+            "Validation errors have occurred",
             e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).toList()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationExceptionDto);

@@ -12,12 +12,12 @@ import jakarta.validation.*;
 @Getter @Setter
 public class PostRequestDTO {
 
+    @NotNull(message = "The user_id cannot be empty")
+    @Positive(message = "The user_id must be greater than zero")
     @JsonProperty("user_id")
-    @NotNull(message = "El user_id no puede estar vacío")
-    @Positive(message = "El user_id debe ser mayor que cero")
     private Long userId;
 
-    @NotBlank(message = "La fecha no puede estar vacía")
+    @NotBlank(message = "The date cannot be empty")
     @JsonProperty("date")
     private String date;
 
@@ -25,12 +25,12 @@ public class PostRequestDTO {
     @JsonProperty("product")
     private ProductDTO product;
 
-    @NotNull(message = "El campo category no puede estar vacío")
+    @NotNull(message = "The category cannot be empty")
     @JsonProperty("category")
     private int category;
 
-    @NotNull(message = "El campo price no puede estar vacío")
-    @DecimalMax(value = "10000000", message = "El precio máximo por producto es de 10.000.000")
+    @NotNull(message = "The price cannot be empty")
+    @DecimalMax(value = "10000000", message = "The price cannot be greater than $10'000.000")
     @JsonProperty("price")
     private Double price;
 
