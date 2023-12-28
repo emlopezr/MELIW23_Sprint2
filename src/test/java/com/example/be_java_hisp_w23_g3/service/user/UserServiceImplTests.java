@@ -3,10 +3,7 @@ package com.example.be_java_hisp_w23_g3.service.user;
 import com.example.be_java_hisp_w23_g3.dto.response.UserDTO;
 import com.example.be_java_hisp_w23_g3.entity.Seller;
 import com.example.be_java_hisp_w23_g3.entity.User;
-import com.example.be_java_hisp_w23_g3.exception.FollowingMyselfException;
-import com.example.be_java_hisp_w23_g3.exception.InvalidOrderException;
-import com.example.be_java_hisp_w23_g3.exception.NotAFollowerException;
-import com.example.be_java_hisp_w23_g3.exception.NotFoundException;
+import com.example.be_java_hisp_w23_g3.exception.*;
 import com.example.be_java_hisp_w23_g3.dto.response.MessageResponseDTO;
 import com.example.be_java_hisp_w23_g3.repository.seller.SellerRepository;
 import com.example.be_java_hisp_w23_g3.repository.user.UserRepository;
@@ -302,6 +299,19 @@ class UserServiceImplTests {
         Long sellerIdToFollow = 1L;
         assertThrows(FollowingMyselfException.class,() -> service.followSeller(userId,sellerIdToFollow));
     }
+
+    @Test
+    void followSeller_shouldThrowAlreadyAFollowerException(){
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userByDefault().withId(userId).withUsername("Lisandro").userWithFollowings().build();
+        Seller sellerFollowed = user.getFollowing().stream().findFirst().get();
+        Long sellerIdFollowed = sellerFollowed.getId();
+        sellerFollowed.setFollower(new HashSet<>(Arrays.asList(user)));
+
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+        when(sellerRepository.read(sellerIdFollowed)).thenReturn(Optional.of(sellerFollowed));
+        assertThrows(AlreadyAFollowerException.class,() -> service.followSeller(userId,sellerIdFollowed));
+       }
 
     @Test
     void unfollowSeller_shouldWorkWhenSellerExistsOnFollowings() {
