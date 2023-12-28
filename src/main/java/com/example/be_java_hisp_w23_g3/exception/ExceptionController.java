@@ -1,7 +1,6 @@
 package com.example.be_java_hisp_w23_g3.exception;
 
-import com.example.be_java_hisp_w23_g3.dto.ExceptionDto;
-import com.example.be_java_hisp_w23_g3.dto.ValidationExceptionDTO;
+import com.example.be_java_hisp_w23_g3.dto.response.ExceptionDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -18,77 +17,77 @@ import java.time.format.DateTimeParseException;
 public class ExceptionController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e){
-        ValidationExceptionDTO validationExceptionDto = new ValidationExceptionDTO(
+    public ResponseEntity<ExceptionDTO> methodArgumentNotValidException(MethodArgumentNotValidException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(
             "Validation errors have occurred",
             e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationExceptionDto);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> constraintViolationException(ConstraintViolationException e){
-        ValidationExceptionDTO validationExceptionDto = new ValidationExceptionDTO(
+    public ResponseEntity<ExceptionDTO> constraintViolationException(ConstraintViolationException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(
             "Validation errors have occurred",
             e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).toList()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationExceptionDto);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> httpMessageNotReadableException(HttpMessageNotReadableException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> httpMessageNotReadableException(HttpMessageNotReadableException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> validationException(ValidationException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> validationException(ValidationException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> notFoundException(NotFoundException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> notFoundException(NotFoundException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionDto);
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<?> alreadyExistsProductException(AlreadyExistsException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> alreadyExistsProductException(AlreadyExistsException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(InvalidOrderException.class)
-    public ResponseEntity<?> invalidOrderException(InvalidOrderException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> invalidOrderException(InvalidOrderException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<?> dateTimeParseException(DateTimeParseException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> dateTimeParseException(DateTimeParseException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
     @ExceptionHandler(NotAFollowerException.class)
-    public ResponseEntity<?> notAFollowerException(NotAFollowerException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> notAFollowerException(NotAFollowerException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
     @ExceptionHandler(UnFollowingMyselfException.class)
-    public ResponseEntity<?> unFollowingMyselfException(UnFollowingMyselfException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> unFollowingMyselfException(UnFollowingMyselfException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
     @ExceptionHandler(FollowingMyselfException.class)
-    public ResponseEntity<?> followingMyselfException(FollowingMyselfException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> followingMyselfException(FollowingMyselfException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
     @ExceptionHandler(AlreadyAFollowerException.class)
-    public ResponseEntity<?> alreadyAFollowerException(AlreadyAFollowerException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+    public ResponseEntity<ExceptionDTO> alreadyAFollowerException(AlreadyAFollowerException e){
+        ExceptionDTO exceptionDto = new ExceptionDTO(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDto);
     }
 
