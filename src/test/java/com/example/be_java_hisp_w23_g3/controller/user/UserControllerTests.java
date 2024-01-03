@@ -36,53 +36,57 @@ class UserControllerTests {
 
     @Test
     void getFollowersList_shouldAcceptNameAscOrderParameter() {
+        // Arrange
         Long userId = 1L;
         String order = "name_asc";
-
         FollowersListDTO followersListDTO = new FollowersListDTOTestDataBuilder()
                 .followersListDTOWithFollowers().build();
-
         when(userService.getFollowersList(userId, order))
                 .thenReturn(followersListDTO);
 
+        // Act
         controller.getFollowersList(userId, order);
 
+        // Assert
         verify(userService).getFollowersList(userId, order);
     }
 
     @Test
     void getFollowersList_shouldAcceptNameDescOrderParameter() {
+        // Arrange
         Long userId = 1L;
         String order = "name_desc";
-
         FollowersListDTO followersListDTO = new FollowersListDTOTestDataBuilder()
                 .followersListDTOWithFollowers().build();
-
         when(userService.getFollowersList(userId, order))
                 .thenReturn(followersListDTO);
 
+        // Act
         controller.getFollowersList(userId, order);
 
+        // Assert
         verify(userService).getFollowersList(userId, order);
     }
 
     @Test
     void getFollowersList_shouldAcceptNullOrderParameter() {
+        // Arrange
         Long userId = 1L;
-
         FollowersListDTO followersListDTO = new FollowersListDTOTestDataBuilder()
                 .followersListDTOWithFollowers().build();
-
         when(userService.getFollowersList(userId, null))
                 .thenReturn(followersListDTO);
 
+        // Act
         controller.getFollowersList(userId, null);
 
+        // Assert
         verify(userService).getFollowersList(userId, null);
     }
 
     @Test
     void getFollowersList_shouldThrowInvalidOrderException() {
+        // Arrange
         Long userId = 1L;
         String order = "any other than name_asc or name_desc";
 
@@ -90,180 +94,207 @@ class UserControllerTests {
                 "The 'order' parameter is invalid. The permitted values are 'name_asc' or 'name_desc'."))
                 .when(userService).getFollowersList(userId, order);
 
+        // Act & Assert
         assertThrows(InvalidOrderException.class, () -> controller.getFollowersList(userId, order));
 
+        // Verify
         verify(userService).getFollowersList(userId, order);
     }
 
     @Test
     void getFollowedSellerList_shouldAcceptNameAscOrderParameter() {
+        // Arrange
         Long userId = 1L;
         String order = "name_asc";
-
         FollowedListDTO followedListDTO = new FollowedListDTOTestDataBuilder()
                 .followedListDTOWithFollowed().build();
-
         when(userService.getFollowedSellersList(userId, order))
                 .thenReturn(followedListDTO);
 
+        // Act
         controller.getFollowedSellerList(userId, order);
 
+        // Assert
         verify(userService).getFollowedSellersList(userId, order);
     }
 
     @Test
     void getFollowedSellerList_shouldAcceptNameDescOrderParameter() {
+        // Arrange
         Long userId = 1L;
         String order = "name_desc";
-
         FollowedListDTO followedListDTO = new FollowedListDTOTestDataBuilder()
                 .followedListDTOWithFollowed().build();
-
         when(userService.getFollowedSellersList(userId, order))
                 .thenReturn(followedListDTO);
 
+        // Act
         controller.getFollowedSellerList(userId, order);
 
+        // Assert
         verify(userService).getFollowedSellersList(userId, order);
     }
 
     @Test
     void getFollowedSellerList_shouldAcceptNullOrderParameter() {
+        // Arrange
         Long userId = 1L;
-
         FollowedListDTO followedListDTO = new FollowedListDTOTestDataBuilder()
                 .followedListDTOWithFollowed().build();
-
         when(userService.getFollowedSellersList(userId, null))
                 .thenReturn(followedListDTO);
 
+        // Act
         controller.getFollowedSellerList(userId, null);
 
+        // Assert
         verify(userService).getFollowedSellersList(userId, null);
     }
 
     @Test
     void getFollowedSellerList_shouldThrowInvalidOrderException() {
+        // Arrange
         Long userId = 1L;
         String order = "any other than name_asc or name_desc";
-
         doThrow(new InvalidOrderException(
                 "The 'order' parameter is invalid. The permitted values are 'name_asc' or 'name_desc'."))
                 .when(userService).getFollowedSellersList(userId, order);
 
+        // Act & Assert
         assertThrows(InvalidOrderException.class, () -> controller.getFollowedSellerList(userId, order));
 
+        // Verify
         verify(userService).getFollowedSellersList(userId, order);
     }
 
     @Test
     void getFollowersCount_shouldReturnFollowersCountForValidUserId() {
-    Long userId = 1L;
-    FollowersCountDTO followersCountDTO = new FollowersCountDTO(
-            userId,"username",5);
+        // Arrange
+        Long userId = 1L;
+        FollowersCountDTO followersCountDTO = new FollowersCountDTO(
+                userId, "username", 5);
+        when(userService.getFollowersCount(userId)).thenReturn(followersCountDTO);
 
-    when(userService.getFollowersCount(userId)).thenReturn(followersCountDTO);
+        // Act
+        ResponseEntity<FollowersCountDTO> response = controller.getFollowersCount(userId);
 
-    ResponseEntity<FollowersCountDTO> response = controller.getFollowersCount(userId);
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(followersCountDTO, response.getBody());
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(followersCountDTO, response.getBody());
-    verify(userService).getFollowersCount(userId);
+        // Verify
+        verify(userService).getFollowersCount(userId);
     }
 
     @Test
     void getFollowersCount_shouldThrowExceptionForInvalidUserId() {
+        // Arrange
         Long userId = -1L;
-
         doThrow(new ConstraintViolationException("The user_id must be greater than zero", new HashSet<>()))
                 .when(userService).getFollowersCount(userId);
 
+        // Act & Assert
         assertThrows(ConstraintViolationException.class, () -> controller.getFollowersCount(userId));
 
+        // Verify
         verify(userService).getFollowersCount(userId);
     }
 
     @Test
     void followSeller_shouldReturnMessageResponseDTOForValidUserIds() {
-    Long userId = 1L;
-    Long userIdToFollow = 2L;
+        // Arrange
+        Long userId = 1L;
+        Long userIdToFollow = 2L;
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully followed.");
+        when(userService.followSeller(userId, userIdToFollow)).thenReturn(messageResponseDTO);
 
-    MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully followed.");
+        // Act
+        ResponseEntity<MessageResponseDTO> response = controller.followSeller(userId, userIdToFollow);
 
-    when(userService.followSeller(userId, userIdToFollow)).thenReturn(messageResponseDTO);
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(messageResponseDTO, response.getBody());
 
-    ResponseEntity<MessageResponseDTO> response = controller.followSeller(userId, userIdToFollow);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(messageResponseDTO, response.getBody());
-    verify(userService).followSeller(userId, userIdToFollow);
-}
+        // Verify
+        verify(userService).followSeller(userId, userIdToFollow);
+    }
 
     @Test
     void followSeller_shouldThrowExceptionForInvalidUserId() {
+        // Arrange
         Long userId = -1L;
         Long userIdToFollow = 2L;
-
         doThrow(new ConstraintViolationException("The follower user_id must be greater than zero", new HashSet<>()))
                 .when(userService).followSeller(userId, userIdToFollow);
 
+        // Act & Assert
         assertThrows(ConstraintViolationException.class, () -> controller.followSeller(userId, userIdToFollow));
 
+        // Verify
         verify(userService).followSeller(userId, userIdToFollow);
     }
 
     @Test
     void followSeller_shouldThrowExceptionForInvalidUserIdToFollow() {
+        // Arrange
         Long userId = 1L;
         Long userIdToFollow = -1L;
-
         doThrow(new ConstraintViolationException("The user_id to follow must be greater than zero", new HashSet<>()))
                 .when(userService).followSeller(userId, userIdToFollow);
 
+        // Act & Assert
         assertThrows(ConstraintViolationException.class, () -> controller.followSeller(userId, userIdToFollow));
 
+        // Verify
         verify(userService).followSeller(userId, userIdToFollow);
     }
 
     @Test
     void unFollowSeller_shouldReturnMessageResponseDTOForValidUserIds() {
-    Long userId = 1L;
-    Long userIdToUnfollow = 2L;
+        // Arrange
+        Long userId = 1L;
+        Long userIdToUnfollow = 2L;
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully unfollowed.");
+        when(userService.unfollowSeller(userId, userIdToUnfollow)).thenReturn(messageResponseDTO);
 
-    MessageResponseDTO messageResponseDTO = new MessageResponseDTO("User successfully unfollowed.");
+        // Act
+        ResponseEntity<MessageResponseDTO> response = controller.unfollowSeller(userId, userIdToUnfollow);
 
-    when(userService.unfollowSeller(userId, userIdToUnfollow)).thenReturn(messageResponseDTO);
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(messageResponseDTO, response.getBody());
 
-    ResponseEntity<MessageResponseDTO> response = controller.unfollowSeller(userId, userIdToUnfollow);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(messageResponseDTO, response.getBody());
-    verify(userService).unfollowSeller(userId, userIdToUnfollow);
-}
+        // Verify
+        verify(userService).unfollowSeller(userId, userIdToUnfollow);
+    }
 
     @Test
     void unFollowSeller_shouldThrowExceptionForInvalidUserId() {
+        // Arrange
         Long userId = -1L;
         Long userIdToUnfollow = 2L;
-
         doThrow(new ConstraintViolationException("The follower user_id must be greater than zero", new HashSet<>()))
                 .when(userService).unfollowSeller(userId, userIdToUnfollow);
 
+        // Act & Assert
         assertThrows(ConstraintViolationException.class, () -> controller.unfollowSeller(userId, userIdToUnfollow));
 
+        // Verify
         verify(userService).unfollowSeller(userId, userIdToUnfollow);
     }
 
     @Test
     void unFollowSeller_shouldThrowExceptionForInvalidUserIdToUnfollow() {
+        // Arrange
         Long userId = 1L;
         Long userIdToUnfollow = -1L;
-
         doThrow(new ConstraintViolationException("The user_id to unfollow must be greater than zero", new HashSet<>()))
                 .when(userService).unfollowSeller(userId, userIdToUnfollow);
 
+        // Act & Assert
         assertThrows(ConstraintViolationException.class, () -> controller.unfollowSeller(userId, userIdToUnfollow));
 
+        // Verify
         verify(userService).unfollowSeller(userId, userIdToUnfollow);
     }
 

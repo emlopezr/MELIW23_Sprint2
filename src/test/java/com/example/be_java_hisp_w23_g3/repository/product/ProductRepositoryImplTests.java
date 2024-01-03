@@ -28,48 +28,57 @@ class ProductRepositoryImplTests {
 
     @Test
     void create_shouldCreateAndReturnPost() {
+        // Arrange
         Post savedPost = repository.create(post);
+
+        // Act
         boolean isPresent = repository.read(savedPost.getId()).isPresent();
 
+        // Assert
         assertTrue(isPresent);
         assertTrue(areEquals(savedPost));
     }
 
     @Test
     void createAll_shouldCreateAllAndReturnPosts() {
-        Post post1 = new PostTestDataBuilder().postByDefault()
-                .build();
-        Post post2 = new PostTestDataBuilder().postByDefault()
-                .build();
-        Post post3 = new PostTestDataBuilder().postByDefault()
-                .build();
-        Post post4 = new PostTestDataBuilder().postByDefault()
-                .build();
-
+        // Arrange
+        Post post1 = new PostTestDataBuilder().postByDefault().build();
+        Post post2 = new PostTestDataBuilder().postByDefault().build();
+        Post post3 = new PostTestDataBuilder().postByDefault().build();
+        Post post4 = new PostTestDataBuilder().postByDefault().build();
         List<Post> posts = List.of(post1, post2, post3, post4);
+
+        // Act
         List<Post> savedPosts = repository.createAll(posts);
 
+        // Assert
         assertEquals(posts.size(), savedPosts.size());
     }
 
     @Test
     void read_shouldReturnPost() {
+        // Arrange
         repository.create(post);
 
+        // Act
         Post readPost = repository.read(post.getId()).orElse(null);
 
+        // Assert
         assertNotNull(readPost);
     }
 
     @Test
     void read_shouldReturnEmpty() {
+        // Act
         Optional<Post> readPost = repository.read(post.getId());
 
+        // Assert
         assertTrue(readPost.isEmpty());
     }
 
     @Test
     void readBatchBySellersId_shouldReturnSellersPosts() {
+        // Arrange
         Seller seller1 = new SellerTestDataBuilder().sellerByDefault().withId(101L).build();
         Seller seller2 = new SellerTestDataBuilder().sellerByDefault().withId(102L).build();
         Seller seller3 = new SellerTestDataBuilder().sellerByDefault().withId(103L).build();
@@ -93,8 +102,10 @@ class ProductRepositoryImplTests {
 
         List<Long> sellerIds = List.of(101L, 103L, 104L);
 
+        // Act
         List<Post> readPosts = repository.readBatchBySellerIds(sellerIds);
 
+        // Assert
         assertEquals(3, readPosts.size());
 
         assertTrue(readPosts.stream().anyMatch(p -> areEquals(post1, p)));
@@ -106,6 +117,7 @@ class ProductRepositoryImplTests {
 
     @Test
     void readBatchBySellersId_shouldReturnEmptySellersPosts() {
+        // Arrange
         Seller seller1 = new SellerTestDataBuilder().sellerByDefault().withId(101L).build();
         Seller seller2 = new SellerTestDataBuilder().sellerByDefault().withId(102L).build();
         Seller seller3 = new SellerTestDataBuilder().sellerByDefault().withId(103L).build();
@@ -129,13 +141,16 @@ class ProductRepositoryImplTests {
 
         List<Long> sellerIds = List.of(102L);
 
+        // Act
         List<Post> readPosts = repository.readBatchBySellerIds(sellerIds);
 
+        // Assert
         assertTrue(readPosts.isEmpty());
     }
 
     @Test
     void findAll_shouldReturnAllPosts() {
+        // Arrange
         Post post1 = new PostTestDataBuilder().postByDefault()
                 .build();
         Post post2 = new PostTestDataBuilder().postByDefault()
@@ -148,22 +163,28 @@ class ProductRepositoryImplTests {
         List<Post> posts = List.of(post1, post2, post3, post4);
         repository.createAll(posts);
 
+        // Act
         List<Post> readPosts = repository.findAll();
 
+        // Assert
         assertEquals(posts.size(), readPosts.size());
     }
 
     @Test
     void delete_shouldRemovePost() {
+        // Arrange
         repository.create(post);
 
+        // Act
         repository.delete(post.getId());
 
+        // Assert
         assertFalse(repository.read(post.getId()).isPresent());
     }
 
     @Test
     void update_shouldUpdate() {
+        // Arrange
         Post post1 = new PostTestDataBuilder().postByDefault().build();
         Post post2 = new PostTestDataBuilder().postByDefault()
                 .withSeller(new SellerTestDataBuilder().sellerByDefault().build())
@@ -175,8 +196,10 @@ class ProductRepositoryImplTests {
 
         repository.create(post1);
 
+        // Act
         repository.update(post1.getId(), post2);
 
+        // Assert
         assertTrue(areEquals(post1, post2));
     }
 
