@@ -24,65 +24,79 @@ class SellerRepositoryImplTests {
 
     @Test
     void create_shouldCreateAndReturnSeller() {
+        // Arrange
         Seller savedSeller = repository.create(seller);
+
+        // Act
         boolean isPresent = repository.read(seller.getId()).isPresent();
 
+        // Assert
         assertTrue(isPresent);
         assertTrue(areEquals(savedSeller));
     }
 
     @Test
     void createAll_shouldCreateAllAndReturnSellers() {
-        Seller seller1 = new SellerTestDataBuilder().sellerByDefault()
-                .build();
-        Seller seller2 = new SellerTestDataBuilder().sellerByDefault()
-                .build();
-        Seller seller3 = new SellerTestDataBuilder().sellerByDefault()
-                .build();
-        Seller seller4 = new SellerTestDataBuilder().sellerByDefault()
-                .build();
-
+        // Arrange
+        Seller seller1 = new SellerTestDataBuilder().sellerByDefault().build();
+        Seller seller2 = new SellerTestDataBuilder().sellerByDefault().build();
+        Seller seller3 = new SellerTestDataBuilder().sellerByDefault().build();
+        Seller seller4 = new SellerTestDataBuilder().sellerByDefault().build();
         List<Seller> sellers = List.of(seller1, seller2, seller3, seller4);
+
+        // Act
         List<Seller> savedSellers = repository.createAll(sellers);
 
+        // Assert
         assertEquals(sellers.size(), savedSellers.size());
     }
 
     @Test
     void read_shouldReturnSeller() {
+        // Arrange
         repository.create(seller);
 
+        // Act
         Seller readSeller = repository.read(seller.getId()).orElse(null);
 
+        // Assert
         assertNotNull(readSeller);
     }
 
     @Test
     void read_shouldReturnEmpty() {
+        // Arrange
+        // No arrangement needed for this test
+
+        // Act
         Optional<Seller> readSeller = repository.read(seller.getId());
 
+        // Assert
         assertTrue(readSeller.isEmpty());
     }
 
     @Test
     void delete_shouldRemoveSeller() {
+        // Arrange
         repository.create(seller);
 
+        // Act
         repository.delete(seller.getId());
 
+        // Assert
         assertFalse(repository.read(seller.getId()).isPresent());
     }
 
     @Test
     void update_shouldUpdate() {
-        Seller seller2 = new SellerTestDataBuilder().sellerByDefault()
-                .withUsername("Updated Username")
-                .build();
-
+        // Arrange
+        Seller seller2 = new SellerTestDataBuilder().sellerByDefault().withUsername("Updated Username").build();
         repository.create(seller);
 
+        // Act
         repository.update(seller.getId(), seller2);
 
+        // Assert
         assertTrue(areEquals(seller2));
     }
 

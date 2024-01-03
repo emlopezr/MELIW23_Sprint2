@@ -47,15 +47,17 @@ class ProductServiceImplTests {
 
     @Test
     void followedPosts_ListReturnsCorrectDTOWhenUserFollowsSellers() {
+        // Arrange
         Long userId = 1L;
         User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
-
         List<Post> posts = Collections.singletonList(new PostTestDataBuilder().postByDefault().build());
         when(productRepository.readBatchBySellerIds(anyList())).thenReturn(posts);
 
+        // Act
         FollowedPostsListDTO result = service.followedPostsList(userId, null);
 
+        // Assert
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertEquals(posts.size(), result.getPosts().size());
@@ -63,21 +65,25 @@ class ProductServiceImplTests {
 
     @Test
     void followedPosts_ListThrowsNotFoundExceptionWhenUserDoesNotExist() {
+        // Arrange
         Long userId = 1L;
         when(userRepository.read(userId)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(NotFoundException.class, () -> service.followedPostsList(userId, null));
     }
 
     @Test
     void followedPosts_ListReturnsEmptyDTOWhenUserFollowsNoSellers() {
+        // Arrange
         Long userId = 1L;
         User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
-
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
 
+        // Act
         FollowedPostsListDTO result = service.followedPostsList(userId, null);
 
+        // Assert
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertTrue(result.getPosts().isEmpty());
@@ -85,29 +91,7 @@ class ProductServiceImplTests {
 
     @Test
     void followedPosts_ListReturnsCorrectlyOrderedDTOWhenOrderIsDateAsc() {
-    Long userId = 1L;
-    User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
-    when(userRepository.read(userId)).thenReturn(Optional.of(user));
-
-    List<Post> posts = Arrays.asList(
-            new PostTestDataBuilder().postByDefault().withId(1L).withDate(LocalDate.now().minusDays(2)).build(),
-            new PostTestDataBuilder().postByDefault().withId(2L).withDate(LocalDate.now().minusDays(1)).build(),
-            new PostTestDataBuilder().postByDefault().withId(3L).withDate(LocalDate.now()).build()
-    );
-    when(productRepository.readBatchBySellerIds(anyList())).thenReturn(posts);
-
-    FollowedPostsListDTO result = service.followedPostsList(userId, "date_asc");
-
-    assertNotNull(result);
-    assertEquals(userId, result.getUserId());
-    assertEquals(posts.size(), result.getPosts().size());
-    assertEquals(1L, result.getPosts().get(0).getPostId());
-    assertEquals(2L, result.getPosts().get(1).getPostId());
-    assertEquals(3L, result.getPosts().get(2).getPostId());
-}
-
-    @Test
-    void followedPosts_ListReturnsCorrectlyOrderedDTOWhenOrderIsDateDesc() {
+        // Arrange
         Long userId = 1L;
         User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
@@ -119,8 +103,36 @@ class ProductServiceImplTests {
         );
         when(productRepository.readBatchBySellerIds(anyList())).thenReturn(posts);
 
+        // Act
+        FollowedPostsListDTO result = service.followedPostsList(userId, "date_asc");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(userId, result.getUserId());
+        assertEquals(posts.size(), result.getPosts().size());
+        assertEquals(1L, result.getPosts().get(0).getPostId());
+        assertEquals(2L, result.getPosts().get(1).getPostId());
+        assertEquals(3L, result.getPosts().get(2).getPostId());
+    }
+
+    @Test
+    void followedPosts_ListReturnsCorrectlyOrderedDTOWhenOrderIsDateDesc() {
+        // Arrange
+        Long userId = 1L;
+        User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
+        when(userRepository.read(userId)).thenReturn(Optional.of(user));
+
+        List<Post> posts = Arrays.asList(
+                new PostTestDataBuilder().postByDefault().withId(1L).withDate(LocalDate.now().minusDays(2)).build(),
+                new PostTestDataBuilder().postByDefault().withId(2L).withDate(LocalDate.now().minusDays(1)).build(),
+                new PostTestDataBuilder().postByDefault().withId(3L).withDate(LocalDate.now()).build()
+        );
+        when(productRepository.readBatchBySellerIds(anyList())).thenReturn(posts);
+
+        // Act
         FollowedPostsListDTO result = service.followedPostsList(userId, "date_desc");
 
+        // Assert
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertEquals(posts.size(), result.getPosts().size());
@@ -131,6 +143,7 @@ class ProductServiceImplTests {
 
     @Test
     void followedPostsList_ReturnsPostsWithinLastTwoWeeks() {
+        // Arrange
         Long userId = 1L;
         User user = new UserTestDataBuilder().userWithFollowings().withId(userId).build();
 
@@ -144,8 +157,10 @@ class ProductServiceImplTests {
         when(productRepository.readBatchBySellerIds(anyList())).thenReturn(posts);
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
 
+        // Act
         FollowedPostsListDTO result = service.followedPostsList(userId, null);
 
+        // Assert
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertEquals(2, result.getPosts().size());
@@ -154,20 +169,20 @@ class ProductServiceImplTests {
 
     @Test
     void postProduct_shouldReturnCorrectDTOWhenProductIsPosted() {
+        // Arrange
         Long userId = 1L;
         User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
-
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
 
-
         Post post = new PostTestDataBuilder().postByDefault().build();
-
         when(productRepository.getNextId()).thenReturn(post.getId());
         when(productRepository.create(any(Post.class))).thenReturn(post);
 
+        // Act
         PostRequestDTO request = new PostRequestDTOTestDataBuilder().postRequestDTOByDefault().build();
         PostResponseDTO result = service.postProduct(request);
 
+        // Assert
         assertNotNull(result);
         assertEquals(post.getId(), result.getPostId());
         assertEquals(post.getDate(), result.getDate());
@@ -177,23 +192,26 @@ class ProductServiceImplTests {
 
     @Test
     void postProduct_shouldThrowNotFoundExceptionWhenUserDoesNotExist() {
+        // Arrange
         Long userId = 1L;
         when(userRepository.read(userId)).thenReturn(Optional.empty());
 
+        // Act & Assert
         PostRequestDTO request = new PostRequestDTOTestDataBuilder().postRequestDTOByDefault().build();
         assertThrows(NotFoundException.class, () -> service.postProduct(request));
     }
 
     @Test
     void postProduct_shouldThrowAlreadyExistsExceptionWhenProductIsAlreadyPosted() {
+        // Arrange
         Long userId = 1L;
         User user = new UserTestDataBuilder().userByDefault().withId(userId).build();
-
         when(userRepository.read(userId)).thenReturn(Optional.of(user));
 
         PostRequestDTO request = new PostRequestDTOTestDataBuilder().postRequestDTOByDefault().build();
         when(productRepository.findAll()).thenReturn(Collections.singletonList(new PostTestDataBuilder().postByDefault().build()));
 
+        // Act & Assert
         assertThrows(AlreadyExistsException.class, () -> service.postProduct(request));
     }
 }
